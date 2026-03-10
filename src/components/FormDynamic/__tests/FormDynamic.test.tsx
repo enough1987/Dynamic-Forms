@@ -7,11 +7,11 @@ import { FormDynamic } from '../index'
 import { FieldDataType, WidgetType } from '@/contracts/enums'
 import type { FormConfig } from '@/contracts/field.types'
 
-function Wrapper({ children }: { children: React.ReactNode }) {
+function Wrapper({ children }: { children: React.ReactNode }): React.JSX.Element {
   return <LocalizationProvider dateAdapter={AdapterDayjs}>{children}</LocalizationProvider>
 }
 
-function renderForm(config: FormConfig, onSubmit = vi.fn()) {
+function renderForm(config: FormConfig, onSubmit = vi.fn()): ReturnType<typeof render> {
   return render(
     <Wrapper>
       <FormDynamic config={config} onSubmit={onSubmit} />

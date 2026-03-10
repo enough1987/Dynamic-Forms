@@ -17,10 +17,10 @@ type FormDynamicProps = {
   submitLabel?: string
 }
 
-export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDynamicProps) {
+export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDynamicProps): React.JSX.Element {
   const initialValues = buildInitialValues(config.fields)
 
-  const handleValidate = (values: FormValues) => validate(config.fields, values)
+  const handleValidate = (values: FormValues): Record<string, string> => validate(config.fields, values)
 
   const formik = useFormik<FormValues>({
     initialValues,
@@ -49,6 +49,7 @@ export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDy
       syncFieldState(field, formik.values, initialValues, handlers)
     }
   }, [formik.values])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const fields = renderFields(config.fields, formik)
 

@@ -2,7 +2,7 @@ import { vi } from 'vitest'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import type { FieldFormState } from '@/contracts/form.types'
-import type { ReactNode } from 'react'
+import type { JSX, ReactNode } from 'react'
 
 export function makeFormState(overrides: Partial<FieldFormState> = {}): FieldFormState {
   return {
@@ -17,7 +17,7 @@ export function makeFormState(overrides: Partial<FieldFormState> = {}): FieldFor
   }
 }
 
-export function withLocalizationProvider(ui: ReactNode) {
+export function withLocalizationProvider(ui: ReactNode): JSX.Element {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {ui}

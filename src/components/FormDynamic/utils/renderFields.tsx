@@ -1,4 +1,5 @@
-import { useFormik } from 'formik'
+/* eslint-disable react-refresh/only-export-components */
+import type { useFormik } from 'formik'
 import { WidgetType } from '@/contracts/enums'
 import type { CheckboxFieldConfig, DatePickerFieldConfig, FieldConfig, InputFieldConfig, NumberFieldConfig, RadioGroupFieldConfig, SelectFieldConfig, TextareaFieldConfig } from '@/contracts/field.types'
 import { InputTextWidget } from '@/components/FormWidgets/InputTextWidget'
@@ -22,7 +23,7 @@ function getFieldFormState(field: FieldConfig, formik: FormikInstance): FieldFor
   return {
     value: formik.values[field.name],
     touched: Boolean(formik.touched[field.name]),
-    error: formik.errors[field.name] as string | undefined,
+    error: formik.errors[field.name],
     onChange: formik.handleChange,
     onBlur: formik.handleBlur,
     setFieldValue: formik.setFieldValue,

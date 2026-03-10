@@ -28,7 +28,7 @@ export const InputTextWidget = memo(function InputTextWidget({ field, formState 
       required={Boolean(field.validation?.required)}
       error={isError}
       helperText={helperText}
-      inputProps={{ pattern: field.ui?.pattern, maxLength: field.validation?.maxLength }}
+      slotProps={{ htmlInput: { pattern: field.ui?.pattern, maxLength: field.validation?.maxLength } }}
       variant="outlined"
       fullWidth
     />

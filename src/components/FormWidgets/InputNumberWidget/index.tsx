@@ -19,6 +19,8 @@ export const InputNumberWidget = memo(function InputNumberWidget({ field, formSt
   const isError = formState.touched && Boolean(formState.error)
   const helperText = (formState.touched && formState.error) || field.ui.helpText || ''
 
+  if(!field) return null
+
   return (
     <TextField
       id={field.name}

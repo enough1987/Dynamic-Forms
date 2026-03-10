@@ -18,6 +18,8 @@ export const RadioGroupWidget = memo(function RadioGroupWidget({ field, formStat
   const isError = formState.touched && Boolean(formState.error)
   const helperText = formState.touched && formState.error
 
+  if(!field) return null
+
   return (
     <FormControl error={isError} required={Boolean(field.validation?.required)}>
       <FormLabel id={`${field.name}-label`}>{field.ui.label}</FormLabel>

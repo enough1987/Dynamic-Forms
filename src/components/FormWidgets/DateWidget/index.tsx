@@ -33,6 +33,8 @@ export const DateWidget = memo(function DateWidget({ field, formState }: DateWid
     (document.activeElement as HTMLElement | null)?.blur()
   }
 
+  if(!field) return null
+
   return (
     <DatePicker
       label={field.ui.label}

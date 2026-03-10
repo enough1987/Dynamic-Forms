@@ -4,7 +4,7 @@
  *
  * Required env vars:
  *   AWS_REGION       e.g. "us-east-1"
- *   S3_BUCKET_NAME   e.g. "my-dynamoform-app"
+ *   S3_BUCKET_NAME   e.g. "dynamicform"
  */
 
 import {

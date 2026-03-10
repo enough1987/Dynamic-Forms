@@ -13,8 +13,8 @@ const FormExamples = lazy(() =>
 function App(): React.JSX.Element {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack spacing={4} sx={{ maxWidth: 480, mx: 'auto', mt: 6 }}>
-        <Typography variant="h4" component="h1">DynamoForm</Typography>
+      <Stack spacing={4} sx={{ mx: 'auto', mt: 6 }}>
+        <Typography variant="h4" component="h1">DynamicForm</Typography>
         <Suspense fallback={<CircularProgress />}>
           <FormExamples />
         </Suspense>

@@ -16,6 +16,8 @@ export const SelectWidget = memo(function SelectWidget({ field, formState }: Sel
   const labelId = `${field.name}-label`
   const isError = formState.touched && Boolean(formState.error)
 
+  if(!field) return null
+
   return (
     <FormControl fullWidth variant="outlined" error={isError} required={Boolean(field.validation?.required)}>
       <InputLabel id={labelId}>{field.ui.label}</InputLabel>

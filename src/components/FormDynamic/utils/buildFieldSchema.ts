@@ -2,13 +2,13 @@ import { z } from 'zod'
 import { WidgetType } from '@/contracts/enums'
 import type { FieldConfig, RadioGroupFieldConfig, SelectFieldConfig } from '@/contracts/field.types'
 
-export function buildFieldSchema(field: FieldConfig): z.ZodTypeAny | null {
+export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
   const v = field.validation
   const widget = field.ui.widget
 
   if (widget === WidgetType.Checkbox) {
     const schema = z.boolean()
-    return v?.required ? schema.refine((val) => val === true, {
+    return v?.required ? schema.refine((isVal) => isVal, {
       message: typeof v.required === 'string' ? v.required : `${field.ui.label} is required`,
     }) : schema
   }
@@ -31,17 +31,17 @@ export function buildFieldSchema(field: FieldConfig): z.ZodTypeAny | null {
   if (!v) return null
 
   if (widget === WidgetType.DatePicker) {
-    let schema = z.string().date('Invalid date')
+    let schema: z.ZodType<string> = z.iso.date()
 
     if (v.minDate !== undefined) {
       const val = typeof v.minDate === 'string' ? v.minDate : v.minDate.value
       const msg = typeof v.minDate === 'string' ? `Date must be on or after ${val}` : v.minDate.message
-      schema = schema.refine((d) => d >= val, msg) as typeof schema
+      schema = schema.refine((_val) => _val >= val, msg)
     }
     if (v.maxDate !== undefined) {
       const val = typeof v.maxDate === 'string' ? v.maxDate : v.maxDate.value
       const msg = typeof v.maxDate === 'string' ? `Date must be on or before ${val}` : v.maxDate.message
-      schema = schema.refine((d) => d <= val, msg) as typeof schema
+      schema = schema.refine((_val) => _val <= val, msg)
     }
 
     return v.required ? schema : schema.optional()
@@ -52,12 +52,12 @@ export function buildFieldSchema(field: FieldConfig): z.ZodTypeAny | null {
 
     if (v.min !== undefined) {
       const val = typeof v.min === 'number' ? v.min : v.min.value
-      const msg = typeof v.min === 'number' ? `Minimum value is ${val}` : v.min.message
+      const msg = typeof v.min === 'number' ? `Minimum value is ${String(val)}` : v.min.message
       schema = schema.min(val, msg)
     }
     if (v.max !== undefined) {
       const val = typeof v.max === 'number' ? v.max : v.max.value
-      const msg = typeof v.max === 'number' ? `Maximum value is ${val}` : v.max.message
+      const msg = typeof v.max === 'number' ? `Maximum value is ${String(val)}` : v.max.message
       schema = schema.max(val, msg)
     }
 
@@ -69,16 +69,20 @@ export function buildFieldSchema(field: FieldConfig): z.ZodTypeAny | null {
 
   if (v.minLength !== undefined) {
     const val = typeof v.minLength === 'number' ? v.minLength : v.minLength.value
-    const msg = typeof v.minLength === 'number' ? `Minimum ${val} characters` : v.minLength.message
+    const msg = typeof v.minLength === 'number' ? `Minimum ${String(val)} characters` : v.minLength.message
     schema = schema.min(val, msg)
   }
   if (v.maxLength !== undefined) {
     const val = typeof v.maxLength === 'number' ? v.maxLength : v.maxLength.value
-    const msg = typeof v.maxLength === 'number' ? `Maximum ${val} characters` : v.maxLength.message
+    const msg = typeof v.maxLength === 'number' ? `Maximum ${String(val)} characters` : v.maxLength.message
     schema = schema.max(val, msg)
   }
   if (v.email) {
-    schema = schema.email(typeof v.email === 'string' ? v.email : 'Invalid email')
+    const emailMsg = typeof v.email === 'string' ? v.email : 'Invalid email'
+    schema = schema.refine(
+      (val) => !val || z.email().safeParse(val).success,
+      emailMsg
+    ) as unknown as z.ZodString
   }
   if (v.pattern !== undefined) {
     const val = typeof v.pattern === 'string' ? v.pattern : v.pattern.value

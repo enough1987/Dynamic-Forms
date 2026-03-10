@@ -15,9 +15,9 @@ export function syncFieldState(
   const hasOptionLogic = 'options' in field && field.options.some((o) => o.logic)
   if (!hasFieldLogic && !hasOptionLogic) return
 
-  const visible = evaluateLogic(field.logic?.visibleIf, values)
+  const isVisible = evaluateLogic(field.logic?.visibleIf, values)
 
-  if (!visible) {
+  if (!isVisible) {
     if (values[field.name] === initialValues[field.name]) return
     void setFieldValue(field.name, initialValues[field.name])
     void setFieldTouched(field.name, false, false)
@@ -31,8 +31,8 @@ export function syncFieldState(
   if (current === '' || current === initialValues[field.name]) return
 
   const visibleOptions = field.options.filter((opt) => evaluateLogic(opt.logic?.visibleIf, values))
-  const stillValid = visibleOptions.some((opt) => String(opt.value) === String(current))
-  if (stillValid) return
+  const isStillValid = visibleOptions.some((opt) => String(opt.value) === String(current))
+  if (isStillValid) return
 
   void setFieldValue(field.name, initialValues[field.name])
   void setFieldTouched(field.name, false, false)

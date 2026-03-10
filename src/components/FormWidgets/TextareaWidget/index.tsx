@@ -13,6 +13,8 @@ export const TextareaWidget = memo(function TextareaWidget({ field, formState }:
   const isError = formState.touched && Boolean(formState.error)
   const helperText = (formState.touched && formState.error) || field.ui.helpText || ''
 
+  if(!field) return null
+
   return (
     <TextField
       id={field.name}
@@ -25,7 +27,7 @@ export const TextareaWidget = memo(function TextareaWidget({ field, formState }:
       required={Boolean(field.validation?.required)}
       error={isError}
       helperText={helperText}
-      inputProps={{ maxLength: field.validation?.maxLength }}
+      slotProps={{ htmlInput: { maxLength: field.validation?.maxLength } }}
       variant="outlined"
       fullWidth
       multiline
