@@ -1,0 +1,229 @@
+{
+  "id": "job_application",
+  "title": "Job Application",
+  "fields": [
+    {
+      "name": "role",
+      "type": "text",
+      "ui": {
+        "label": "Role Applied For",
+        "widget": "select",
+        "placeholder": "Select a role…"
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "frontend",
+          "label": "Frontend Engineer"
+        },
+        {
+          "value": "backend",
+          "label": "Backend Engineer"
+        },
+        {
+          "value": "fullstack",
+          "label": "Fullstack Engineer"
+        },
+        {
+          "value": "designer",
+          "label": "Product Designer"
+        },
+        {
+          "value": "pm",
+          "label": "Product Manager"
+        }
+      ]
+    },
+    {
+      "name": "employment_type",
+      "type": "text",
+      "ui": {
+        "label": "Employment Type",
+        "widget": "radio-group"
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "full_time",
+          "label": "Full-time"
+        },
+        {
+          "value": "part_time",
+          "label": "Part-time"
+        },
+        {
+          "value": "contract",
+          "label": "Contract"
+        }
+      ]
+    },
+    {
+      "name": "available_from",
+      "type": "datetime",
+      "ui": {
+        "label": "Available From",
+        "widget": "datepicker"
+      },
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "name": "years_experience",
+      "type": "integer",
+      "ui": {
+        "label": "Years of Experience",
+        "widget": "number",
+        "helpText": "Total professional experience in years."
+      },
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 40
+      }
+    },
+    {
+      "name": "senior_summary",
+      "type": "text",
+      "ui": {
+        "label": "Senior Experience Summary",
+        "widget": "textarea",
+        "placeholder": "Describe your most impactful projects and leadership experience…",
+        "helpText": "Required for candidates with 5+ years of experience. Max 600 characters."
+      },
+      "validation": {
+        "required": true,
+        "minLength": 10,
+        "maxLength": 600
+      },
+      "logic": {
+        "visibleIf": {
+          ">=": [
+            {
+              "var": "years_experience"
+            },
+            5
+          ]
+        }
+      }
+    },
+    {
+      "name": "remote_only",
+      "type": "text",
+      "ui": {
+        "label": "I am only available for fully remote work",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "preferred_office",
+      "type": "text",
+      "ui": {
+        "label": "Preferred Office Location",
+        "widget": "select",
+        "placeholder": "Select an office…"
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "!=": [
+            {
+              "var": "remote_only"
+            },
+            true
+          ]
+        }
+      },
+      "options": [
+        {
+          "value": "london",
+          "label": "London"
+        },
+        {
+          "value": "berlin",
+          "label": "Berlin"
+        },
+        {
+          "value": "new_york",
+          "label": "New York"
+        },
+        {
+          "value": "singapore",
+          "label": "Singapore"
+        },
+        {
+          "value": "no_preference",
+          "label": "No preference"
+        }
+      ]
+    },
+    {
+      "name": "contact_email",
+      "type": "text",
+      "ui": {
+        "label": "Email Address",
+        "widget": "input",
+        "inputType": "email"
+      },
+      "validation": {
+        "required": true,
+        "email": true
+      }
+    },
+    {
+      "name": "linkedin_url",
+      "type": "text",
+      "ui": {
+        "label": "LinkedIn Profile URL",
+        "widget": "input",
+        "inputType": "url",
+        "placeholder": "https://linkedin.com/in/…",
+        "helpText": "Optional."
+      }
+    },
+    {
+      "name": "salary_expectation",
+      "type": "integer",
+      "ui": {
+        "label": "Salary Expectation (USD / year)",
+        "widget": "number",
+        "helpText": "Enter your expected annual gross salary in USD."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      },
+      "logic": {
+        "visibleIf": {
+          "in": [
+            {
+              "var": "employment_type"
+            },
+            ["full_time", "contract"]
+          ]
+        }
+      }
+    },
+    {
+      "name": "cover_letter",
+      "type": "text",
+      "ui": {
+        "label": "Cover Letter",
+        "widget": "textarea",
+        "placeholder": "Tell us why you are a great fit for this role and what excites you about joining us…",
+        "helpText": "Required. Between 100 and 1000 characters."
+      },
+      "validation": {
+        "required": true,
+        "minLength": 10,
+        "maxLength": 1000
+      }
+    }
+  ]
+}
