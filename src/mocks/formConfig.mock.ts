@@ -1,4 +1,4 @@
-import { FieldDataType, InputType, WidgetType } from '@/contracts/enums'
+import { FieldDataType, WidgetType } from '@/contracts/enums'
 import type { FormConfig } from '@/contracts/field.types'
 
 export const formConfig: FormConfig = {
