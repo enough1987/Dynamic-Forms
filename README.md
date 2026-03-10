@@ -77,15 +77,14 @@ Pass it to `<FormDynamic>`:
 
 ## Widgets
 
-| Widget          | `WidgetType` |
 | --------------- | ------------ |
-| Text input      | `Input`      |
-| Textarea        | `Textarea`   |
-| Number          | `Number`     |
-| Select dropdown | `Select`     |
-| Radio group     | `RadioGroup` |
-| Checkbox        | `Checkbox`   |
-| Date picker     | `DatePicker` |
+| Text input | `Input` |
+| Textarea | `Textarea` |
+| Number | `Number` |
+| Select dropdown | `Select` |
+| Radio group | `RadioGroup` |
+| Checkbox | `Checkbox` |
+| Date picker | `DatePicker` |
 
 ---
 
@@ -160,4 +159,117 @@ The pipeline runs: **install → test → lint → format check → build → cr
 ```bash
 cp .env.example .env   # fill in your AWS credentials
 npm run setup:bucket
+```
+
+---
+
+## Loading a Config from a JSON File
+
+The live demo includes a **Custom** tab that lets you load any `.json` config file from disk and instantly render the form — no code changes needed.
+
+### How it works
+
+1. Select **Custom — paste your own config** in the demo.
+2. Click **Choose JSON file…** and pick a `.json` file.
+3. The file is parsed client-side and the form renders immediately on the left.
+
+### JSON format
+
+JSON configs use the same structure as TypeScript configs. Field `type` and `ui.widget` values are the **string equivalents** of the TypeScript enums:
+
+| TypeScript               | JSON string     |
+| ------------------------ | --------------- |
+| `FieldDataType.Text`     | `"text"`        |
+| `FieldDataType.Integer`  | `"integer"`     |
+| `FieldDataType.DateTime` | `"datetime"`    |
+| `WidgetType.Input`       | `"input"`       |
+| `WidgetType.Select`      | `"select"`      |
+| `WidgetType.Textarea`    | `"textarea"`    |
+| `WidgetType.Number`      | `"number"`      |
+| `WidgetType.Checkbox`    | `"checkbox"`    |
+| `WidgetType.RadioGroup`  | `"radio-group"` |
+| `WidgetType.DatePicker`  | `"datepicker"`  |
+| `InputType.Email`        | `"email"`       |
+| `InputType.Url`          | `"url"`         |
+
+> The demo also accepts the TypeScript enum name strings (e.g. `"WidgetType.Select"`) and normalises them automatically.
+
+### Example — `src/mocks/custom.json`
+
+```json
+{
+  "id": "job_application",
+  "title": "Job Application",
+  "fields": [
+    {
+      "name": "role",
+      "type": "text",
+      "ui": {
+        "label": "Role Applied For",
+        "widget": "select",
+        "placeholder": "Select a role…"
+      },
+      "validation": { "required": true },
+      "options": [
+        { "value": "frontend", "label": "Frontend Engineer" },
+        { "value": "backend", "label": "Backend Engineer" },
+        { "value": "fullstack", "label": "Fullstack Engineer" }
+      ]
+    },
+    {
+      "name": "employment_type",
+      "type": "text",
+      "ui": { "label": "Employment Type", "widget": "radio-group" },
+      "validation": { "required": true },
+      "options": [
+        { "value": "full_time", "label": "Full-time" },
+        { "value": "part_time", "label": "Part-time" },
+        { "value": "contract", "label": "Contract" }
+      ]
+    },
+    {
+      "name": "years_experience",
+      "type": "integer",
+      "ui": {
+        "label": "Years of Experience",
+        "widget": "number",
+        "helpText": "Total professional experience in years."
+      },
+      "validation": { "required": true, "min": 0, "max": 40 }
+    },
+    {
+      "name": "senior_summary",
+      "type": "text",
+      "ui": {
+        "label": "Senior Experience Summary",
+        "widget": "textarea",
+        "helpText": "Required for 5+ years experience."
+      },
+      "validation": { "required": true, "minLength": 20, "maxLength": 600 },
+      "logic": { "visibleIf": { ">=": [{ "var": "years_experience" }, 5] } }
+    },
+    {
+      "name": "salary_expectation",
+      "type": "integer",
+      "ui": {
+        "label": "Salary Expectation (USD / year)",
+        "widget": "number"
+      },
+      "validation": { "required": true, "min": 0 },
+      "logic": {
+        "visibleIf": { "in": [{ "var": "employment_type" }, ["full_time", "contract"]] }
+      }
+    },
+    {
+      "name": "cover_letter",
+      "type": "text",
+      "ui": {
+        "label": "Cover Letter",
+        "widget": "textarea",
+        "helpText": "Required. Between 100 and 1000 characters."
+      },
+      "validation": { "required": true, "minLength": 100, "maxLength": 1000 }
+    }
+  ]
+}
 ```
