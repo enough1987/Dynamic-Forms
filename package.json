@@ -1,5 +1,5 @@
 {
-  "name": "dynamoform",
+  "name": "dynamicform",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "setup:bucket": "node --env-file=.env scripts/create-s3-bucket.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
@@ -27,6 +28,7 @@
     "zod-formik-adapter": "^2.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
     "@eslint/js": "^9.39.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
