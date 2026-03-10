@@ -1,4 +1,4 @@
-# DynamoForm
+# DynamicForm
 
 A config-driven dynamic form engine built with React, TypeScript, Formik, Zod, and MUI.
 
