@@ -26,7 +26,7 @@ export const RadioGroupWidget = memo(function RadioGroupWidget({ field, formStat
       <RadioGroup
         aria-labelledby={`${field.name}-label`}
         name={field.name}
-        value={formState.value}
+        value={formState.value ?? ''}
         onChange={formState.onChange}
         onBlur={formState.onBlur}
       >

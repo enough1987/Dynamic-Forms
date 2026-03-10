@@ -26,7 +26,7 @@ export const SelectWidget = memo(function SelectWidget({ field, formState }: Sel
         id={field.name}
         name={field.name}
         label={field.ui.label}
-        value={formState.value}
+        value={formState.value ?? ''}
         onChange={formState.onChange}
         onBlur={formState.onBlur}
       >

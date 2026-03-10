@@ -1,0 +1,334 @@
+{
+  "id": "maaslin3_config",
+  "title": "MaAsLin 3 — Analysis Configuration",
+  "fields": [
+    {
+      "name": "feature_specific_covariate",
+      "type": "text",
+      "ui": {
+        "label": "Feature-Specific Covariate Path",
+        "widget": "input",
+        "placeholder": "Path to tab-delimited file or leave blank…",
+        "helpText": "Optional. A table with features as columns and samples as rows. Must match the row/column names of input_data."
+      }
+    },
+    {
+      "name": "feature_specific_covariate_name",
+      "type": "text",
+      "ui": {
+        "label": "Feature-Specific Covariate Name",
+        "widget": "input",
+        "placeholder": "e.g. gc_content",
+        "helpText": "Name used for the covariate when fitting per-feature models."
+      },
+      "validation": { "required": true },
+      "logic": { "visibleIf": { "!!": [{ "var": "feature_specific_covariate" }] } }
+    },
+    {
+      "name": "feature_specific_covariate_record",
+      "type": "text",
+      "ui": {
+        "label": "Keep covariate in outputs (p-values, results, plots)",
+        "widget": "checkbox"
+      },
+      "logic": { "visibleIf": { "!!": [{ "var": "feature_specific_covariate" }] } }
+    },
+    {
+      "name": "normalization",
+      "type": "text",
+      "ui": {
+        "label": "Normalization",
+        "widget": "select",
+        "helpText": "Applied to features before transformation. Default: TSS (total-sum scaling)."
+      },
+      "validation": { "required": true },
+      "options": [
+        { "value": "TSS", "label": "TSS — Total-Sum Scaling (recommended)" },
+        { "value": "CLR", "label": "CLR — Centered Log Ratio" },
+        { "value": "NONE", "label": "NONE — No normalization" }
+      ]
+    },
+    {
+      "name": "transform",
+      "type": "text",
+      "ui": {
+        "label": "Transformation",
+        "widget": "select",
+        "helpText": "Applied after normalization. LOG (base 2) is recommended. PLOG uses a pseudo-count of half the minimum non-zero abundance."
+      },
+      "validation": { "required": true },
+      "options": [
+        { "value": "LOG", "label": "LOG — Log base 2 (recommended)" },
+        { "value": "PLOG", "label": "PLOG — Pseudo-log (for metabolomics)" },
+        { "value": "NONE", "label": "NONE — No transformation" }
+      ]
+    },
+    {
+      "name": "correction",
+      "type": "text",
+      "ui": {
+        "label": "Multiple Testing Correction",
+        "widget": "select",
+        "helpText": "FDR correction method applied to raw p-values. Default: BH (Benjamini–Hochberg)."
+      },
+      "validation": { "required": true },
+      "options": [
+        { "value": "BH", "label": "BH — Benjamini–Hochberg (default)" },
+        { "value": "bonferroni", "label": "Bonferroni" },
+        { "value": "holm", "label": "Holm" },
+        { "value": "hochberg", "label": "Hochberg" },
+        { "value": "BY", "label": "BY — Benjamini–Yekutieli" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    {
+      "name": "evaluate_only",
+      "type": "text",
+      "ui": {
+        "label": "Evaluate Only",
+        "widget": "radio-group",
+        "helpText": "Fit only the abundance models, only the prevalence models, or both (default)."
+      },
+      "validation": { "required": true },
+      "options": [
+        { "value": "both", "label": "Both (default)" },
+        { "value": "abundance", "label": "Abundance only" },
+        { "value": "prevalence", "label": "Prevalence only" }
+      ]
+    },
+    {
+      "name": "min_abundance",
+      "type": "integer",
+      "ui": {
+        "label": "Minimum Abundance",
+        "widget": "number",
+        "helpText": "Features must exceed this abundance in at least min_prevalence of samples. Default: 0."
+      },
+      "validation": { "required": true, "min": 0 }
+    },
+    {
+      "name": "min_prevalence",
+      "type": "integer",
+      "ui": {
+        "label": "Minimum Prevalence",
+        "widget": "number",
+        "helpText": "Minimum fraction of samples that must exceed min_abundance. Default: 0."
+      },
+      "validation": { "required": true, "min": 0, "max": 1 }
+    },
+    {
+      "name": "max_prevalence",
+      "type": "integer",
+      "ui": {
+        "label": "Maximum Prevalence",
+        "widget": "number",
+        "helpText": "Features present in fewer samples than this fraction are excluded. Default: 1.01."
+      },
+      "validation": { "required": true, "min": 0, "max": 2 }
+    },
+    {
+      "name": "max_significance",
+      "type": "integer",
+      "ui": {
+        "label": "Maximum Significance (q-value threshold)",
+        "widget": "number",
+        "helpText": "FDR-corrected q-value threshold for significance. Default: 0.1."
+      },
+      "validation": { "required": true, "min": 0, "max": 1 }
+    },
+    {
+      "name": "zero_threshold",
+      "type": "integer",
+      "ui": {
+        "label": "Zero Threshold",
+        "widget": "number",
+        "helpText": "Abundances ≤ this value are treated as zeros. Use to suppress low-abundance false positives. Default: 0."
+      },
+      "validation": { "required": true, "min": 0 }
+    },
+    {
+      "name": "min_variance",
+      "type": "integer",
+      "ui": {
+        "label": "Minimum Variance",
+        "widget": "number",
+        "helpText": "Features with variance ≤ this value are dropped (e.g. entirely-zero features). Default: 0."
+      },
+      "validation": { "required": true, "min": 0 }
+    },
+    {
+      "name": "standardize",
+      "type": "text",
+      "ui": {
+        "label": "Standardize continuous metadata (z-scores)",
+        "widget": "checkbox",
+        "helpText": "Recommended — enables coefficient comparison across metadata variables."
+      }
+    },
+    {
+      "name": "warn_prevalence",
+      "type": "text",
+      "ui": {
+        "label": "Warn when prevalence associations may be induced by abundance",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "augment",
+      "type": "text",
+      "ui": {
+        "label": "Augment data to avoid linear separability",
+        "widget": "checkbox",
+        "helpText": "Adds small synthetic observations to prevent linear separability in logistic regression."
+      }
+    },
+    {
+      "name": "small_random_effects",
+      "type": "text",
+      "ui": {
+        "label": "Replace small random effects with fixed effects automatically",
+        "widget": "checkbox",
+        "helpText": "Handles low numbers of observations per random-effect group in the prevalence model."
+      }
+    },
+    {
+      "name": "absolute_abundance_type",
+      "type": "text",
+      "ui": {
+        "label": "Absolute Abundance Source",
+        "widget": "select",
+        "helpText": "If you have absolute abundance data, select how it was obtained. When using spike-in or total scaling, set median_comparison_abundance to OFF."
+      },
+      "validation": { "required": true },
+      "options": [
+        { "value": "none", "label": "None — using relative abundances" },
+        { "value": "spike_in", "label": "Spike-in normalization" },
+        { "value": "total_scaling", "label": "Total abundance scaling (qPCR / cell count)" }
+      ]
+    },
+    {
+      "name": "unscaled_abundance_path",
+      "type": "text",
+      "ui": {
+        "label": "Unscaled Abundance File Path",
+        "widget": "input",
+        "placeholder": "Path to tab-delimited file with one column…",
+        "helpText": "Single-column table with sample rows. For spike-ins, column name = spike-in feature name. For total scaling, column name = \"total\"."
+      },
+      "validation": { "required": true },
+      "logic": {
+        "visibleIf": { "!=": [{ "var": "absolute_abundance_type" }, "none"] }
+      }
+    },
+    {
+      "name": "median_comparison_abundance",
+      "type": "text",
+      "ui": {
+        "label": "Median comparison — abundance",
+        "widget": "checkbox",
+        "helpText": "Test abundance coefficients against the median coefficient across features (recommended for relative abundance data). Turn OFF for absolute abundance data."
+      }
+    },
+    {
+      "name": "median_comparison_abundance_threshold",
+      "type": "integer",
+      "ui": {
+        "label": "Median Comparison Abundance Threshold",
+        "widget": "number",
+        "helpText": "Coefficients within this distance of the median are set to p = 1 (likely compositionality artefacts). Default: 0."
+      },
+      "validation": { "required": true, "min": 0 },
+      "logic": { "visibleIf": { "==": [{ "var": "median_comparison_abundance" }, true] } }
+    },
+    {
+      "name": "median_comparison_prevalence",
+      "type": "text",
+      "ui": {
+        "label": "Median comparison — prevalence",
+        "widget": "checkbox",
+        "helpText": "Test prevalence coefficients against the median. OFF by default; use only if compositionality-induced sparsity is expected."
+      }
+    },
+    {
+      "name": "median_comparison_prevalence_threshold",
+      "type": "integer",
+      "ui": {
+        "label": "Median Comparison Prevalence Threshold",
+        "widget": "number",
+        "helpText": "Same as the abundance threshold but applied to prevalence coefficients. Default: 0."
+      },
+      "validation": { "required": true, "min": 0 },
+      "logic": { "visibleIf": { "==": [{ "var": "median_comparison_prevalence" }, true] } }
+    },
+    {
+      "name": "subtract_median",
+      "type": "text",
+      "ui": {
+        "label": "Subtract median from coefficients in output",
+        "widget": "checkbox"
+      },
+      "logic": {
+        "visibleIf": {
+          "or": [
+            { "==": [{ "var": "median_comparison_abundance" }, true] },
+            { "==": [{ "var": "median_comparison_prevalence" }, true] }
+          ]
+        }
+      }
+    },
+    {
+      "name": "plot_summary_plot",
+      "type": "text",
+      "ui": {
+        "label": "Generate summary plot of significant associations",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "summary_plot_first_n",
+      "type": "integer",
+      "ui": {
+        "label": "Summary Plot — Top N Features",
+        "widget": "number",
+        "helpText": "Number of top features with significant associations to include in the summary plot. Default: 25."
+      },
+      "validation": { "required": true, "min": 1, "max": 500 },
+      "logic": { "visibleIf": { "==": [{ "var": "plot_summary_plot" }, true] } }
+    },
+    {
+      "name": "plot_associations",
+      "type": "text",
+      "ui": {
+        "label": "Generate per-association scatter plots",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "max_pngs",
+      "type": "integer",
+      "ui": {
+        "label": "Per-Association Plots — Maximum Count",
+        "widget": "number",
+        "helpText": "Top N significant associations for which individual plots are generated. Default: 30."
+      },
+      "validation": { "required": true, "min": 0 },
+      "logic": { "visibleIf": { "==": [{ "var": "plot_associations" }, true] } }
+    },
+    {
+      "name": "save_models",
+      "type": "text",
+      "ui": {
+        "label": "Save fitted models to RData file",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "save_plots_rds",
+      "type": "text",
+      "ui": {
+        "label": "Save plots as RDS files",
+        "widget": "checkbox"
+      }
+    }
+  ]
+}

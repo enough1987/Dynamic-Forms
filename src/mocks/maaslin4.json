@@ -1,0 +1,1779 @@
+{
+  "id": "maaslin4_config",
+  "title": "MaAsLin 3 \u2014 Full Analysis Configuration",
+  "fields": [
+    {
+      "name": "input_data",
+      "type": "text",
+      "ui": {
+        "label": "Input Data Path",
+        "widget": "input",
+        "placeholder": "path/to/feature_table.tsv",
+        "helpText": "Tab-delimited feature abundance table (features \u00d7 samples) or path to a SummarizedExperiment / MultiAssayExperiment RDS file."
+      },
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "name": "input_metadata",
+      "type": "text",
+      "ui": {
+        "label": "Input Metadata Path",
+        "widget": "input",
+        "placeholder": "path/to/metadata.tsv",
+        "helpText": "Tab-delimited sample metadata. Row names must exactly match sample names in input_data."
+      },
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "name": "output_dir",
+      "type": "text",
+      "ui": {
+        "label": "Output Directory",
+        "widget": "input",
+        "placeholder": "path/to/output/",
+        "helpText": "Directory for all results, plots, and logs. Created if it does not exist."
+      },
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "name": "input_format",
+      "type": "text",
+      "ui": {
+        "label": "Input Data Format",
+        "widget": "select",
+        "helpText": "Orientation of the abundance table. Wide: features as rows. Wide-transposed: samples as rows. SE/MAE: Bioconductor object."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "wide",
+          "label": "Wide \u2014 features as rows, samples as columns"
+        },
+        {
+          "value": "wide_transposed",
+          "label": "Wide transposed \u2014 samples as rows, features as columns"
+        },
+        {
+          "value": "summarized_experiment",
+          "label": "SummarizedExperiment / MultiAssayExperiment"
+        }
+      ]
+    },
+    {
+      "name": "assay_type",
+      "type": "text",
+      "ui": {
+        "label": "Assay Type (SE index or name)",
+        "widget": "input",
+        "placeholder": "1",
+        "helpText": "String or 1-based integer selecting which assay to use from the SummarizedExperiment. Default: 1."
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "input_format"
+            },
+            "summarized_experiment"
+          ]
+        }
+      }
+    },
+    {
+      "name": "mae_experiment",
+      "type": "text",
+      "ui": {
+        "label": "MAE Experiment Name",
+        "widget": "input",
+        "placeholder": "e.g. microbiome",
+        "helpText": "Name of the specific experiment to extract from a MultiAssayExperiment object."
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "input_format"
+            },
+            "summarized_experiment"
+          ]
+        }
+      }
+    },
+    {
+      "name": "sample_id_column",
+      "type": "text",
+      "ui": {
+        "label": "Sample ID Column in Metadata",
+        "widget": "input",
+        "placeholder": "sample_id",
+        "helpText": "Name of the metadata column holding sample identifiers when they differ from row names."
+      }
+    },
+    {
+      "name": "feature_id_column",
+      "type": "text",
+      "ui": {
+        "label": "Feature ID Column in Abundance Table",
+        "widget": "input",
+        "placeholder": "feature_id",
+        "helpText": "Column name containing feature identifiers when the table has an explicit ID column rather than using row names."
+      }
+    },
+    {
+      "name": "formula",
+      "type": "text",
+      "ui": {
+        "label": "Model Formula",
+        "widget": "input",
+        "placeholder": "~ age + BMI + diagnosis",
+        "helpText": "R-style right-hand-side formula. Fixed-effect metadata variables to test. Interactions and functions of metadata are supported and applied after standardization."
+      },
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "name": "has_random_effects",
+      "type": "text",
+      "ui": {
+        "label": "Include random effects",
+        "widget": "checkbox",
+        "helpText": "Enable when samples are grouped (repeated measures, paired samples, multi-site cohorts)."
+      }
+    },
+    {
+      "name": "random_effects",
+      "type": "text",
+      "ui": {
+        "label": "Random Effect Variables",
+        "widget": "input",
+        "placeholder": "subject_id, study_site",
+        "helpText": "Comma-separated metadata column names for random-effect grouping factors. Each is modelled as (1 | variable) in the mixed model."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "has_random_effects"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "random_effects_type",
+      "type": "text",
+      "ui": {
+        "label": "Random Effects Model Type",
+        "widget": "radio-group",
+        "helpText": "Intercept-only is simpler and usually sufficient. Slope allows the effect of a fixed predictor to vary by group."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "intercept",
+          "label": "Random intercepts only (default)"
+        },
+        {
+          "value": "slope",
+          "label": "Random intercepts + slopes"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "has_random_effects"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "slope_variable",
+      "type": "text",
+      "ui": {
+        "label": "Slope Variable",
+        "widget": "input",
+        "placeholder": "e.g. time",
+        "helpText": "The fixed-effect variable whose slope is allowed to vary across random-effect groups."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "has_random_effects"
+                },
+                true
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "random_effects_type"
+                },
+                "slope"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "small_random_effects",
+      "type": "text",
+      "ui": {
+        "label": "Auto-replace small random effects with fixed effects",
+        "widget": "checkbox",
+        "helpText": "Groups with too few observations can cause convergence failures in the logistic model. This falls back to fixed effects for such groups automatically."
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "has_random_effects"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "bypass_small_group_warning",
+      "type": "text",
+      "ui": {
+        "label": "Bypass small-group warning in outputs",
+        "widget": "checkbox",
+        "helpText": "Suppress the warning flag added to results when fewer than 4 observations per random-effect group are present."
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "has_random_effects"
+                },
+                true
+              ]
+            },
+            {
+              "!=": [
+                {
+                  "var": "small_random_effects"
+                },
+                true
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "min_group_size",
+      "type": "integer",
+      "ui": {
+        "label": "Minimum Group Size Threshold",
+        "widget": "number",
+        "helpText": "Groups smaller than this are handled according to small_random_effects. Default: 4."
+      },
+      "validation": {
+        "required": true,
+        "min": 2,
+        "max": 20
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "has_random_effects"
+                },
+                true
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "small_random_effects"
+                },
+                true
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "feature_specific_covariate",
+      "type": "text",
+      "ui": {
+        "label": "Feature-Specific Covariate Path",
+        "widget": "input",
+        "placeholder": "path/to/covariate_table.tsv",
+        "helpText": "Optional. Tab-delimited file with features as columns and samples as rows. Row and column names must match input_data exactly. Typically generated by preprocess_dna_mtx or preprocess_taxa_mtx."
+      }
+    },
+    {
+      "name": "feature_specific_covariate_name",
+      "type": "text",
+      "ui": {
+        "label": "Feature-Specific Covariate Name",
+        "widget": "input",
+        "placeholder": "e.g. gc_content",
+        "helpText": "Name used for this covariate in model output. Does NOT need to appear in the formula."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "!!": [
+            {
+              "var": "feature_specific_covariate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "feature_specific_covariate_record",
+      "type": "text",
+      "ui": {
+        "label": "Include covariate in p-values, results tables, and plots",
+        "widget": "checkbox"
+      },
+      "logic": {
+        "visibleIf": {
+          "!!": [
+            {
+              "var": "feature_specific_covariate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "feature_covariate_center",
+      "type": "text",
+      "ui": {
+        "label": "Center feature-specific covariate per feature",
+        "widget": "checkbox",
+        "helpText": "Subtract the per-feature mean before fitting. Reduces collinearity with the intercept term."
+      },
+      "logic": {
+        "visibleIf": {
+          "!!": [
+            {
+              "var": "feature_specific_covariate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "normalization",
+      "type": "text",
+      "ui": {
+        "label": "Normalization",
+        "widget": "select",
+        "helpText": "Applied to features before transformation. TSS is recommended for relative abundance data. NONE is appropriate only for pre-normalized or absolute abundance data."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "TSS",
+          "label": "TSS \u2014 Total-Sum Scaling (recommended)"
+        },
+        {
+          "value": "CLR",
+          "label": "CLR \u2014 Centered Log Ratio"
+        },
+        {
+          "value": "NONE",
+          "label": "NONE \u2014 No normalization"
+        }
+      ]
+    },
+    {
+      "name": "confirm_prenormalized",
+      "type": "text",
+      "ui": {
+        "label": "I confirm the data is already normalized and NONE is intentional",
+        "widget": "checkbox",
+        "helpText": "Skipping normalization on raw counts will produce incorrect results. Only check this if you are intentionally bypassing normalization."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "normalization"
+            },
+            "NONE"
+          ]
+        }
+      }
+    },
+    {
+      "name": "clr_pseudocount",
+      "type": "integer",
+      "ui": {
+        "label": "CLR Pseudo-Count",
+        "widget": "number",
+        "helpText": "Pseudo-count added to all values before CLR transformation to handle zeros. Must be > 0. Default: 0.5."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "normalization"
+            },
+            "CLR"
+          ]
+        }
+      }
+    },
+    {
+      "name": "transform",
+      "type": "text",
+      "ui": {
+        "label": "Transformation",
+        "widget": "select",
+        "helpText": "Applied after normalization. LOG (base 2) is recommended. PLOG adds a pseudo-count before logging and is designed for metabolomics / sparse data. NONE is valid when CLR normalization is already used."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "LOG",
+          "label": "LOG \u2014 Log base 2 (recommended)"
+        },
+        {
+          "value": "PLOG",
+          "label": "PLOG \u2014 Pseudo-log (metabolomics / sparse data)"
+        },
+        {
+          "value": "NONE",
+          "label": "NONE \u2014 No transformation"
+        }
+      ]
+    },
+    {
+      "name": "confirm_no_transform",
+      "type": "text",
+      "ui": {
+        "label": "I confirm skipping transformation is appropriate for my data",
+        "widget": "checkbox",
+        "helpText": "Linear models on untransformed proportions often violate normality assumptions. Only skip if you have a specific justification."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "transform"
+                },
+                "NONE"
+              ]
+            },
+            {
+              "!=": [
+                {
+                  "var": "normalization"
+                },
+                "CLR"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "pseudo_count_strategy",
+      "type": "text",
+      "ui": {
+        "label": "Pseudo-Count Strategy",
+        "widget": "radio-group",
+        "helpText": "How to determine the pseudo-count added before PLOG transformation."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto \u2014 half the minimum non-zero abundance in the dataset"
+        },
+        {
+          "value": "manual",
+          "label": "Manual \u2014 enter value below"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "transform"
+            },
+            "PLOG"
+          ]
+        }
+      }
+    },
+    {
+      "name": "pseudo_count_value",
+      "type": "integer",
+      "ui": {
+        "label": "Pseudo-Count Value",
+        "widget": "number",
+        "helpText": "Custom pseudo-count added before log-transformation. Must be > 0."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "transform"
+                },
+                "PLOG"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "pseudo_count_strategy"
+                },
+                "manual"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "min_abundance",
+      "type": "integer",
+      "ui": {
+        "label": "Minimum Abundance",
+        "widget": "number",
+        "helpText": "Features must exceed this value in at least min_prevalence of samples to be analyzed. Applied after normalization. Default: 0."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "name": "min_prevalence",
+      "type": "integer",
+      "ui": {
+        "label": "Minimum Prevalence (fraction 0\u20131)",
+        "widget": "number",
+        "helpText": "Minimum fraction of samples where a feature must exceed min_abundance. Default: 0."
+      },
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 1
+      }
+    },
+    {
+      "name": "max_prevalence",
+      "type": "integer",
+      "ui": {
+        "label": "Maximum Prevalence (fraction 0\u20132)",
+        "widget": "number",
+        "helpText": "Features present above min_abundance in more than this fraction of samples are excluded. Default: 1.01 (no cap)."
+      },
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 2
+      }
+    },
+    {
+      "name": "zero_threshold",
+      "type": "integer",
+      "ui": {
+        "label": "Zero Threshold",
+        "widget": "number",
+        "helpText": "Abundance values at or below this are treated as structural zeros before prevalence filtering. Removes low-abundance false positives. Default: 0."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "name": "min_variance",
+      "type": "integer",
+      "ui": {
+        "label": "Minimum Variance",
+        "widget": "number",
+        "helpText": "Features with post-normalization variance at or below this value are dropped. Use to discard entirely-zero features. Default: 0."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "name": "max_missing_fraction",
+      "type": "integer",
+      "ui": {
+        "label": "Maximum Missing Metadata Fraction",
+        "widget": "number",
+        "helpText": "Samples missing more than this fraction of formula variables are excluded. Range: 0\u20131. Default: 0.1."
+      },
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 1
+      }
+    },
+    {
+      "name": "evaluate_only",
+      "type": "text",
+      "ui": {
+        "label": "Evaluate Only",
+        "widget": "radio-group",
+        "helpText": "Fit both model types (default), linear abundance models only, or logistic prevalence models only."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "both",
+          "label": "Both \u2014 abundance (linear) + prevalence (logistic)"
+        },
+        {
+          "value": "abundance",
+          "label": "Abundance only \u2014 linear models"
+        },
+        {
+          "value": "prevalence",
+          "label": "Prevalence only \u2014 logistic models"
+        }
+      ]
+    },
+    {
+      "name": "standardize",
+      "type": "text",
+      "ui": {
+        "label": "Standardize continuous metadata (z-scores)",
+        "widget": "checkbox",
+        "helpText": "Recommended. Scales continuous metadata to mean 0, SD 1 before fitting so coefficients are comparable across variables. Functions of metadata in the formula are applied after standardization."
+      }
+    },
+    {
+      "name": "augment",
+      "type": "text",
+      "ui": {
+        "label": "Augment logistic model data to prevent linear separability",
+        "widget": "checkbox",
+        "helpText": "Adds n_predictors / (2 \u00d7 n_samples) synthetic observations (half 0, half 1) to the logistic model input. Strongly recommended to avoid convergence failures."
+      },
+      "logic": {
+        "visibleIf": {
+          "!=": [
+            {
+              "var": "evaluate_only"
+            },
+            "abundance"
+          ]
+        }
+      }
+    },
+    {
+      "name": "warn_prevalence",
+      "type": "text",
+      "ui": {
+        "label": "Warn when prevalence associations may be induced by abundance",
+        "widget": "checkbox",
+        "helpText": "Flags prevalence coefficients where the matching abundance coefficient is significant, same sign, and larger in absolute value \u2014 suggesting the prevalence result is a by-product of abundance change."
+      },
+      "logic": {
+        "visibleIf": {
+          "!=": [
+            {
+              "var": "evaluate_only"
+            },
+            "prevalence"
+          ]
+        }
+      }
+    },
+    {
+      "name": "correction",
+      "type": "text",
+      "ui": {
+        "label": "Multiple Testing Correction Method",
+        "widget": "select",
+        "helpText": "FDR correction applied to raw p-values to produce q-values. Any method accepted by R p.adjust() is valid. Default: BH."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "BH",
+          "label": "BH \u2014 Benjamini\u2013Hochberg (default)"
+        },
+        {
+          "value": "bonferroni",
+          "label": "Bonferroni"
+        },
+        {
+          "value": "holm",
+          "label": "Holm"
+        },
+        {
+          "value": "hochberg",
+          "label": "Hochberg"
+        },
+        {
+          "value": "BY",
+          "label": "BY \u2014 Benjamini\u2013Yekutieli"
+        },
+        {
+          "value": "none",
+          "label": "None \u2014 raw p-values only"
+        }
+      ]
+    },
+    {
+      "name": "max_significance",
+      "type": "integer",
+      "ui": {
+        "label": "Significance Threshold (q-value)",
+        "widget": "number",
+        "helpText": "Associations with q-value at or below this are written to significant results and plotted. Default: 0.1."
+      },
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 1
+      }
+    },
+    {
+      "name": "p_value_method",
+      "type": "text",
+      "ui": {
+        "label": "P-Value Computation Method",
+        "widget": "select",
+        "helpText": "How raw p-values are derived from fitted models. Wald is fast; LRT is more accurate but requires fitting a second null model."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "wald",
+          "label": "Wald test (default, fast)"
+        },
+        {
+          "value": "lrt",
+          "label": "Likelihood Ratio Test (slower, more accurate)"
+        }
+      ]
+    },
+    {
+      "name": "lrt_ref_formula",
+      "type": "text",
+      "ui": {
+        "label": "LRT Reference (Null) Formula",
+        "widget": "input",
+        "placeholder": "~ 1",
+        "helpText": "Null model formula for the likelihood ratio test. Default: intercept-only (~ 1). Can be a reduced formula that omits a subset of predictors."
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "p_value_method"
+            },
+            "lrt"
+          ]
+        }
+      }
+    },
+    {
+      "name": "random_seed",
+      "type": "integer",
+      "ui": {
+        "label": "Random Seed",
+        "widget": "number",
+        "placeholder": "42",
+        "helpText": "Optional. Set for fully reproducible results when augmentation or resampling is used."
+      },
+      "validation": {
+        "min": 0
+      }
+    },
+    {
+      "name": "absolute_abundance_type",
+      "type": "text",
+      "ui": {
+        "label": "Absolute Abundance Source",
+        "widget": "select",
+        "helpText": "Specify how absolute abundance information is available. When using spike-in or total scaling, turn OFF median_comparison_abundance."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "none",
+          "label": "None \u2014 standard relative abundance / proportion data"
+        },
+        {
+          "value": "pretransformed",
+          "label": "Pre-scaled absolute \u2014 already log-transformed absolute counts"
+        },
+        {
+          "value": "spike_in",
+          "label": "Spike-in \u2014 a known-quantity synthetic microbe was sequenced"
+        },
+        {
+          "value": "total_scaling",
+          "label": "Total abundance scaling \u2014 total load measured by qPCR or cell counting"
+        }
+      ]
+    },
+    {
+      "name": "confirm_absolute_none_normalization",
+      "type": "text",
+      "ui": {
+        "label": "I confirm normalization=NONE and median_comparison_abundance=OFF will be used with these pre-scaled absolute abundances",
+        "widget": "checkbox",
+        "helpText": "Pre-transformed absolute data must be analyzed with normalization=NONE so the already-scaled values are used directly."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "absolute_abundance_type"
+            },
+            "pretransformed"
+          ]
+        }
+      }
+    },
+    {
+      "name": "unscaled_abundance_path",
+      "type": "text",
+      "ui": {
+        "label": "Unscaled Abundance File Path",
+        "widget": "input",
+        "placeholder": "path/to/unscaled_abundance.tsv",
+        "helpText": "Single-column tab-delimited file. Rows = sample names. For spike-in: column name = spike-in feature name. For total scaling: column name = 'total'."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "in": [
+            {
+              "var": "absolute_abundance_type"
+            },
+            ["spike_in", "total_scaling"]
+          ]
+        }
+      }
+    },
+    {
+      "name": "spike_in_feature_name",
+      "type": "text",
+      "ui": {
+        "label": "Spike-In Feature Name",
+        "widget": "input",
+        "placeholder": "e.g. D_mel_spike",
+        "helpText": "Must exactly match one feature name in input_data. This feature's relative abundance is used to scale all others to absolute counts."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "absolute_abundance_type"
+            },
+            "spike_in"
+          ]
+        }
+      }
+    },
+    {
+      "name": "spike_in_quantity_mode",
+      "type": "text",
+      "ui": {
+        "label": "Spike-In Quantity Per Sample",
+        "widget": "radio-group",
+        "helpText": "Whether the same spike-in quantity was added to every sample, or whether it varied and is provided in the unscaled_abundance file."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "uniform",
+          "label": "Uniform \u2014 same quantity in all samples"
+        },
+        {
+          "value": "variable",
+          "label": "Variable \u2014 per-sample quantities in unscaled_abundance file"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "absolute_abundance_type"
+            },
+            "spike_in"
+          ]
+        }
+      }
+    },
+    {
+      "name": "spike_in_quantity",
+      "type": "integer",
+      "ui": {
+        "label": "Uniform Spike-In Quantity",
+        "widget": "number",
+        "placeholder": "1",
+        "helpText": "Absolute amount of spike-in added per sample. When the exact amount is unknown but equal across samples, set to 1 \u2014 this still enables relative-to-absolute scaling."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "absolute_abundance_type"
+                },
+                "spike_in"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "spike_in_quantity_mode"
+                },
+                "uniform"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "total_abundance_units",
+      "type": "text",
+      "ui": {
+        "label": "Total Abundance Measurement Units",
+        "widget": "select",
+        "helpText": "Physical units of the total abundance measurements. Used for output annotation only; does not affect computation."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "cells_per_ml",
+          "label": "Cells / mL (flow cytometry or microscopy)"
+        },
+        {
+          "value": "copies_per_ul",
+          "label": "Gene copies / \u00b5L (qPCR of marker gene)"
+        },
+        {
+          "value": "arbitrary",
+          "label": "Arbitrary / relative units"
+        },
+        {
+          "value": "other",
+          "label": "Other \u2014 describe in notes"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "absolute_abundance_type"
+            },
+            "total_scaling"
+          ]
+        }
+      }
+    },
+    {
+      "name": "total_abundance_notes",
+      "type": "text",
+      "ui": {
+        "label": "Total Abundance Method Notes",
+        "widget": "textarea",
+        "placeholder": "Describe the measurement protocol\u2026",
+        "helpText": "Optional. Describe the experimental protocol used to obtain total abundance estimates."
+      },
+      "validation": {
+        "maxLength": 500
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "absolute_abundance_type"
+            },
+            "total_scaling"
+          ]
+        }
+      }
+    },
+    {
+      "name": "median_comparison_abundance",
+      "type": "text",
+      "ui": {
+        "label": "Median comparison \u2014 abundance",
+        "widget": "checkbox",
+        "helpText": "Test each abundance coefficient against the median coefficient across all features (not zero). Recommended for relative abundance. Turn OFF for spike-in or total-scaling absolute data."
+      },
+      "logic": {
+        "visibleIf": {
+          "!=": [
+            {
+              "var": "evaluate_only"
+            },
+            "prevalence"
+          ]
+        }
+      }
+    },
+    {
+      "name": "median_comparison_abundance_threshold",
+      "type": "integer",
+      "ui": {
+        "label": "Abundance Median Threshold",
+        "widget": "number",
+        "helpText": "Coefficients within this distance of the median are automatically set to p = 1 (likely compositionality artefacts). Divided by metadata SD for continuous variables. Default: 0."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "!=": [
+                {
+                  "var": "evaluate_only"
+                },
+                "prevalence"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "median_comparison_abundance"
+                },
+                true
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "median_comparison_prevalence",
+      "type": "text",
+      "ui": {
+        "label": "Median comparison \u2014 prevalence",
+        "widget": "checkbox",
+        "helpText": "Test prevalence coefficients against the median across features. OFF by default. Enable when compositionality-induced sparsity is likely or you want to compare across features."
+      },
+      "logic": {
+        "visibleIf": {
+          "!=": [
+            {
+              "var": "evaluate_only"
+            },
+            "abundance"
+          ]
+        }
+      }
+    },
+    {
+      "name": "median_comparison_prevalence_threshold",
+      "type": "integer",
+      "ui": {
+        "label": "Prevalence Median Threshold",
+        "widget": "number",
+        "helpText": "Same logic as abundance threshold, applied to prevalence coefficients. Default: 0."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "!=": [
+                {
+                  "var": "evaluate_only"
+                },
+                "abundance"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "median_comparison_prevalence"
+                },
+                true
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "subtract_median",
+      "type": "text",
+      "ui": {
+        "label": "Subtract median from reported coefficients",
+        "widget": "checkbox",
+        "helpText": "Subtracts the per-metadatum median from each reported coefficient so values represent deviation from the median association."
+      },
+      "logic": {
+        "visibleIf": {
+          "or": [
+            {
+              "==": [
+                {
+                  "var": "median_comparison_abundance"
+                },
+                true
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "median_comparison_prevalence"
+                },
+                true
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "subtract_median_scope",
+      "type": "text",
+      "ui": {
+        "label": "Subtract Median \u2014 Apply To",
+        "widget": "radio-group",
+        "helpText": "Whether to subtract the median from abundance coefficients, prevalence coefficients, or both."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "both",
+          "label": "Both abundance and prevalence"
+        },
+        {
+          "value": "abundance",
+          "label": "Abundance only"
+        },
+        {
+          "value": "prevalence",
+          "label": "Prevalence only"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "subtract_median"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "plot_summary_plot",
+      "type": "text",
+      "ui": {
+        "label": "Generate summary association plot",
+        "widget": "checkbox",
+        "helpText": "Produces a combined heatmap + coefficient plot for the top significant features."
+      }
+    },
+    {
+      "name": "summary_plot_first_n",
+      "type": "integer",
+      "ui": {
+        "label": "Summary Plot \u2014 Top N Features",
+        "widget": "number",
+        "helpText": "Maximum features shown in the summary plot, ranked by significance. Default: 25."
+      },
+      "validation": {
+        "required": true,
+        "min": 1,
+        "max": 500
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_summary_plot"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "summary_plot_sort_by",
+      "type": "text",
+      "ui": {
+        "label": "Summary Plot \u2014 Sort Features By",
+        "widget": "radio-group"
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "qvalue",
+          "label": "Q-value (most significant first, default)"
+        },
+        {
+          "value": "coefficient",
+          "label": "Coefficient magnitude (largest first)"
+        },
+        {
+          "value": "feature_name",
+          "label": "Feature name (alphabetical)"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_summary_plot"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "coef_plot_vars",
+      "type": "text",
+      "ui": {
+        "label": "Coefficient Plot Variables",
+        "widget": "textarea",
+        "placeholder": "age, BMI, diagnosis Crohn's",
+        "helpText": "Comma-separated variable names shown as forest/dot plots in the summary figure. Continuous: column name. Categorical: '[variable] [level]'. Leave blank to auto-select top 2 by significant association count."
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_summary_plot"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "heatmap_vars",
+      "type": "text",
+      "ui": {
+        "label": "Heatmap Variables",
+        "widget": "textarea",
+        "placeholder": "sex Male, timepoint",
+        "helpText": "Comma-separated variable names shown in the heatmap panel. Same naming rules. Variables not in coef_plot_vars are used by default."
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_summary_plot"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "heatmap_color_scale",
+      "type": "text",
+      "ui": {
+        "label": "Heatmap Color Scale",
+        "widget": "radio-group",
+        "helpText": "Diverging suits signed coefficients; sequential suits magnitudes or q-values."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "diverging",
+          "label": "Diverging \u2014 blue\u2013white\u2013red (default)"
+        },
+        {
+          "value": "sequential",
+          "label": "Sequential \u2014 white\u2013red"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_summary_plot"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "plot_associations",
+      "type": "text",
+      "ui": {
+        "label": "Generate per-association scatter / box plots",
+        "widget": "checkbox",
+        "helpText": "Renders an individual plot for each significant feature\u2013metadata association."
+      }
+    },
+    {
+      "name": "association_plot_type",
+      "type": "text",
+      "ui": {
+        "label": "Per-Association Plot Type",
+        "widget": "select",
+        "helpText": "Visual style. Auto selects scatter for continuous metadata and box for categorical."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto \u2014 scatter for continuous, box for categorical (default)"
+        },
+        {
+          "value": "scatter",
+          "label": "Scatter plot"
+        },
+        {
+          "value": "box",
+          "label": "Box plot"
+        },
+        {
+          "value": "violin",
+          "label": "Violin plot"
+        },
+        {
+          "value": "sina",
+          "label": "Sina plot (jitter overlay on violin)"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_associations"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "association_plot_show_fit_line",
+      "type": "text",
+      "ui": {
+        "label": "Overlay fitted regression line on scatter plots",
+        "widget": "checkbox",
+        "helpText": "Draws the linear model fit with a confidence band on scatter plots."
+      },
+      "logic": {
+        "visibleIf": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "plot_associations"
+                },
+                true
+              ]
+            },
+            {
+              "in": [
+                {
+                  "var": "association_plot_type"
+                },
+                ["scatter", "auto"]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "max_pngs",
+      "type": "integer",
+      "ui": {
+        "label": "Maximum Per-Association Plot Count",
+        "widget": "number",
+        "helpText": "Top N significant associations for which individual plot files are written. Default: 30."
+      },
+      "validation": {
+        "required": true,
+        "min": 0
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_associations"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "plot_file_format",
+      "type": "text",
+      "ui": {
+        "label": "Plot File Format",
+        "widget": "radio-group"
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "png",
+          "label": "PNG \u2014 raster image (default)"
+        },
+        {
+          "value": "pdf",
+          "label": "PDF \u2014 vector"
+        },
+        {
+          "value": "svg",
+          "label": "SVG \u2014 vector"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_associations"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "plot_width",
+      "type": "integer",
+      "ui": {
+        "label": "Plot Width (inches)",
+        "widget": "number",
+        "helpText": "Width of each output plot file. Default: 7."
+      },
+      "validation": {
+        "required": true,
+        "min": 2,
+        "max": 30
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_associations"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "plot_height",
+      "type": "integer",
+      "ui": {
+        "label": "Plot Height (inches)",
+        "widget": "number",
+        "helpText": "Height of each output plot file. Default: 5."
+      },
+      "validation": {
+        "required": true,
+        "min": 2,
+        "max": 30
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "plot_associations"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "save_plots_rds",
+      "type": "text",
+      "ui": {
+        "label": "Save plots as RDS files (re-editable ggplot2 objects)",
+        "widget": "checkbox"
+      },
+      "logic": {
+        "visibleIf": {
+          "or": [
+            {
+              "==": [
+                {
+                  "var": "plot_summary_plot"
+                },
+                true
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "plot_associations"
+                },
+                true
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "save_models",
+      "type": "text",
+      "ui": {
+        "label": "Save fitted models to RData file",
+        "widget": "checkbox",
+        "helpText": "Persists all lm / glm / lme4 model objects for downstream inspection or re-use without re-fitting."
+      }
+    },
+    {
+      "name": "model_output_filename",
+      "type": "text",
+      "ui": {
+        "label": "Model File Name",
+        "widget": "input",
+        "placeholder": "fitted_models.RData",
+        "helpText": "Name for the saved model RData file, written inside output_dir."
+      },
+      "validation": {
+        "required": true
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "save_models"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "write_all_results",
+      "type": "text",
+      "ui": {
+        "label": "Write all tested associations to file",
+        "widget": "checkbox",
+        "helpText": "When enabled, every feature\u2013metadata association (significant or not) is written to a separate all_results file."
+      }
+    },
+    {
+      "name": "results_file_format",
+      "type": "text",
+      "ui": {
+        "label": "Results File Format",
+        "widget": "radio-group"
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "tsv",
+          "label": "TSV \u2014 tab-separated (default)"
+        },
+        {
+          "value": "csv",
+          "label": "CSV \u2014 comma-separated"
+        }
+      ],
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "write_all_results"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "verbosity",
+      "type": "text",
+      "ui": {
+        "label": "Logging Verbosity",
+        "widget": "select",
+        "helpText": "Detail level written to the log file. Default: FINEST (most verbose)."
+      },
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "value": "FINEST",
+          "label": "FINEST \u2014 all messages (default)"
+        },
+        {
+          "value": "INFO",
+          "label": "INFO \u2014 progress updates and warnings"
+        },
+        {
+          "value": "WARNING",
+          "label": "WARNING \u2014 warnings and errors only"
+        },
+        {
+          "value": "ERROR",
+          "label": "ERROR \u2014 errors only"
+        }
+      ]
+    },
+    {
+      "name": "enable_parallelization",
+      "type": "text",
+      "ui": {
+        "label": "Enable parallelization via mirai",
+        "widget": "checkbox",
+        "helpText": "Distributes model fitting across multiple R processes using the mirai package. You must call mirai::daemons(n) in your R session before running maaslin3()."
+      }
+    },
+    {
+      "name": "num_cores",
+      "type": "integer",
+      "ui": {
+        "label": "Number of Parallel Workers",
+        "widget": "number",
+        "placeholder": "4",
+        "helpText": "Number of mirai background daemons. Must match the n passed to mirai::daemons(n) in your R session."
+      },
+      "validation": {
+        "required": true,
+        "min": 2,
+        "max": 128
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "enable_parallelization"
+            },
+            true
+          ]
+        }
+      }
+    },
+    {
+      "name": "parallel_chunk_size",
+      "type": "integer",
+      "ui": {
+        "label": "Parallel Chunk Size (features per worker)",
+        "widget": "number",
+        "helpText": "Features are split into chunks dispatched to workers. Larger chunks reduce scheduling overhead; smaller chunks improve load balancing. Default: 50."
+      },
+      "validation": {
+        "required": true,
+        "min": 1,
+        "max": 5000
+      },
+      "logic": {
+        "visibleIf": {
+          "==": [
+            {
+              "var": "enable_parallelization"
+            },
+            true
+          ]
+        }
+      }
+    }
+  ]
+}
