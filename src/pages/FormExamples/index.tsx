@@ -22,45 +22,50 @@ export function FormExamples(): React.JSX.Element {
   }
 
   return (
-    <Box sx={{ width: '100%', mx: 'auto', mt: 4, px: 2 }}>
-      <FormControl sx={{ mb: 3 }}>
-        <FormLabel>Form Config</FormLabel>
-        <RadioGroup
-          row
-          value={selected}
-          onChange={(e) => {
-            setSelected(e.target.value as '1' | '2' | '3')
-            setSubmittedValues(null)
-          }}
-        >
-          <FormControlLabel value="1" control={<Radio />} label="Config 1 — Sprint Team Assignment" />
-          <FormControlLabel value="2" control={<Radio />} label="Config 2 — Shipping Location" />
-          <FormControlLabel value="3" control={<Radio />} label="Config 3 — Passenger Details" />
-        </RadioGroup>
-      </FormControl>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <Box sx={{ flexShrink: 0, px: 2, pt: 4, pb: 2, bgcolor: 'background.default', zIndex: 10 }}>
+        <Typography variant="h4" component="h1" sx={{ mb: 3 }}>
+          DynamicForm
+        </Typography>
+        <FormControl>
+          <FormLabel>Form Config</FormLabel>
+          <RadioGroup
+            row
+            value={selected}
+            onChange={(e) => {
+              setSelected(e.target.value as '1' | '2' | '3')
+              setSubmittedValues(null)
+            }}
+          >
+            <FormControlLabel value="1" control={<Radio />} label="Config 1 — Sprint Team Assignment" />
+            <FormControlLabel value="2" control={<Radio />} label="Config 2 — Shipping Location" />
+            <FormControlLabel value="3" control={<Radio />} label="Config 3 — Passenger Details" />
+          </RadioGroup>
+        </FormControl>
+      </Box>
 
-      <Box sx={{ display: 'flex', gap: 3 }}>
-        <Box sx={{ flex: '0 0 70%' }}>
-          <FormDynamic key={selected} config={configs[selected]} onSubmit={handleSubmit} />
-        </Box>
+      <Box sx={{ flex: '1 1 0', overflow: 'auto', px: 2, py: 2 }}>
+        <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
+          <Box sx={{ flex: '1 1 0' }}>
+            <FormDynamic config={configs[selected]} onSubmit={handleSubmit} />
+          </Box>
 
-        <Box sx={{ flex: '0 0 calc(30% - 24px)', display: 'flex', flexDirection: 'column' }}>
-          {submittedValues !== null ? (
-            <Paper variant="outlined" sx={{ p: 2, flex: 1, minHeight: '30vh', overflow: 'auto' }}>
-              <Typography variant="subtitle2" gutterBottom>
-                Submitted values
+          <Box sx={{ flex: '0 0 300px', position: 'sticky', top: 0 }}>
+            <Paper variant="outlined" sx={{ p: 2, minHeight: '30vh', overflow: 'auto' }}>
+              <Typography
+                variant="subtitle2"
+                gutterBottom
+                color={submittedValues !== null ? 'text.primary' : 'text.secondary'}
+              >
+                {submittedValues !== null ? 'Submitted values' : 'Submitted values will appear here.'}
               </Typography>
-              <Box component="pre" sx={{ m: 0, fontSize: 13, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                {JSON.stringify(submittedValues, null, 2)}
-              </Box>
+              {submittedValues !== null && (
+                <Box component="pre" sx={{ m: 0, fontSize: 13, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                  {JSON.stringify(submittedValues, null, 2)}
+                </Box>
+              )}
             </Paper>
-          ) : (
-            <Paper variant="outlined" sx={{ p: 2, flex: 1, minHeight: '30vh' }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                Submitted values will appear here.
-              </Typography>
-            </Paper>
-          )}
+          </Box>
         </Box>
       </Box>
     </Box>
