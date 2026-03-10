@@ -77,14 +77,15 @@ Pass it to `<FormDynamic>`:
 
 ## Widgets
 
+| Widget          | `WidgetType` |
 | --------------- | ------------ |
-| Text input | `Input` |
-| Textarea | `Textarea` |
-| Number | `Number` |
-| Select dropdown | `Select` |
-| Radio group | `RadioGroup` |
-| Checkbox | `Checkbox` |
-| Date picker | `DatePicker` |
+| Text input      | `Input`      |
+| Textarea        | `Textarea`   |
+| Number          | `Number`     |
+| Select dropdown | `Select`     |
+| Radio group     | `RadioGroup` |
+| Checkbox        | `Checkbox`   |
+| Date picker     | `DatePicker` |
 
 ---
 
