@@ -47,7 +47,9 @@ export function FormExamples(): React.JSX.Element {
         <Box sx={{ flex: '0 0 calc(30% - 24px)', display: 'flex', flexDirection: 'column' }}>
           {submittedValues !== null ? (
             <Paper variant="outlined" sx={{ p: 2, flex: 1, minHeight: '30vh', overflow: 'auto' }}>
-              <Typography variant="subtitle2" gutterBottom>Submitted values</Typography>
+              <Typography variant="subtitle2" gutterBottom>
+                Submitted values
+              </Typography>
               <Box component="pre" sx={{ m: 0, fontSize: 13, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {JSON.stringify(submittedValues, null, 2)}
               </Box>

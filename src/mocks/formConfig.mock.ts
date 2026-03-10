@@ -11,10 +11,38 @@ export const formConfig: FormConfig = {
       ui: { label: 'Project Lead', widget: WidgetType.Select, placeholder: 'Select a project lead…' },
       validation: { required: true },
       options: [
-        { value: 'alice', label: 'Alice Chen',  logic: { visibleIf: { and: [{ '!=': [{ var: 'technical_lead' }, 'alice'] }, { '!=': [{ var: 'qa_lead' }, 'alice'] }] } } },
-        { value: 'bob',   label: 'Bob Smith',   logic: { visibleIf: { and: [{ '!=': [{ var: 'technical_lead' }, 'bob']   }, { '!=': [{ var: 'qa_lead' }, 'bob']   }] } } },
-        { value: 'carol', label: 'Carol Davis', logic: { visibleIf: { and: [{ '!=': [{ var: 'technical_lead' }, 'carol'] }, { '!=': [{ var: 'qa_lead' }, 'carol'] }] } } },
-        { value: 'dave',  label: 'Dave Wilson', logic: { visibleIf: { and: [{ '!=': [{ var: 'technical_lead' }, 'dave']  }, { '!=': [{ var: 'qa_lead' }, 'dave']  }] } } },
+        {
+          value: 'alice',
+          label: 'Alice Chen',
+          logic: {
+            visibleIf: {
+              and: [{ '!=': [{ var: 'technical_lead' }, 'alice'] }, { '!=': [{ var: 'qa_lead' }, 'alice'] }],
+            },
+          },
+        },
+        {
+          value: 'bob',
+          label: 'Bob Smith',
+          logic: {
+            visibleIf: { and: [{ '!=': [{ var: 'technical_lead' }, 'bob'] }, { '!=': [{ var: 'qa_lead' }, 'bob'] }] },
+          },
+        },
+        {
+          value: 'carol',
+          label: 'Carol Davis',
+          logic: {
+            visibleIf: {
+              and: [{ '!=': [{ var: 'technical_lead' }, 'carol'] }, { '!=': [{ var: 'qa_lead' }, 'carol'] }],
+            },
+          },
+        },
+        {
+          value: 'dave',
+          label: 'Dave Wilson',
+          logic: {
+            visibleIf: { and: [{ '!=': [{ var: 'technical_lead' }, 'dave'] }, { '!=': [{ var: 'qa_lead' }, 'dave'] }] },
+          },
+        },
       ],
     },
     {
@@ -23,10 +51,34 @@ export const formConfig: FormConfig = {
       ui: { label: 'Technical Lead', widget: WidgetType.Select, placeholder: 'Select a technical lead…' },
       validation: { required: true },
       options: [
-        { value: 'alice', label: 'Alice Chen',  logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'alice'] }, { '!=': [{ var: 'qa_lead' }, 'alice'] }] } } },
-        { value: 'bob',   label: 'Bob Smith',   logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'bob']   }, { '!=': [{ var: 'qa_lead' }, 'bob']   }] } } },
-        { value: 'carol', label: 'Carol Davis', logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'carol'] }, { '!=': [{ var: 'qa_lead' }, 'carol'] }] } } },
-        { value: 'dave',  label: 'Dave Wilson', logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'dave']  }, { '!=': [{ var: 'qa_lead' }, 'dave']  }] } } },
+        {
+          value: 'alice',
+          label: 'Alice Chen',
+          logic: {
+            visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'alice'] }, { '!=': [{ var: 'qa_lead' }, 'alice'] }] },
+          },
+        },
+        {
+          value: 'bob',
+          label: 'Bob Smith',
+          logic: {
+            visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'bob'] }, { '!=': [{ var: 'qa_lead' }, 'bob'] }] },
+          },
+        },
+        {
+          value: 'carol',
+          label: 'Carol Davis',
+          logic: {
+            visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'carol'] }, { '!=': [{ var: 'qa_lead' }, 'carol'] }] },
+          },
+        },
+        {
+          value: 'dave',
+          label: 'Dave Wilson',
+          logic: {
+            visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'dave'] }, { '!=': [{ var: 'qa_lead' }, 'dave'] }] },
+          },
+        },
       ],
     },
     {
@@ -35,10 +87,42 @@ export const formConfig: FormConfig = {
       ui: { label: 'QA Lead', widget: WidgetType.Select, placeholder: 'Select a QA lead…' },
       validation: { required: true },
       options: [
-        { value: 'alice', label: 'Alice Chen',  logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'alice'] }, { '!=': [{ var: 'technical_lead' }, 'alice'] }] } } },
-        { value: 'bob',   label: 'Bob Smith',   logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'bob']   }, { '!=': [{ var: 'technical_lead' }, 'bob']   }] } } },
-        { value: 'carol', label: 'Carol Davis', logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'carol'] }, { '!=': [{ var: 'technical_lead' }, 'carol'] }] } } },
-        { value: 'dave',  label: 'Dave Wilson', logic: { visibleIf: { and: [{ '!=': [{ var: 'project_lead' }, 'dave']  }, { '!=': [{ var: 'technical_lead' }, 'dave']  }] } } },
+        {
+          value: 'alice',
+          label: 'Alice Chen',
+          logic: {
+            visibleIf: {
+              and: [{ '!=': [{ var: 'project_lead' }, 'alice'] }, { '!=': [{ var: 'technical_lead' }, 'alice'] }],
+            },
+          },
+        },
+        {
+          value: 'bob',
+          label: 'Bob Smith',
+          logic: {
+            visibleIf: {
+              and: [{ '!=': [{ var: 'project_lead' }, 'bob'] }, { '!=': [{ var: 'technical_lead' }, 'bob'] }],
+            },
+          },
+        },
+        {
+          value: 'carol',
+          label: 'Carol Davis',
+          logic: {
+            visibleIf: {
+              and: [{ '!=': [{ var: 'project_lead' }, 'carol'] }, { '!=': [{ var: 'technical_lead' }, 'carol'] }],
+            },
+          },
+        },
+        {
+          value: 'dave',
+          label: 'Dave Wilson',
+          logic: {
+            visibleIf: {
+              and: [{ '!=': [{ var: 'project_lead' }, 'dave'] }, { '!=': [{ var: 'technical_lead' }, 'dave'] }],
+            },
+          },
+        },
       ],
     },
     {
@@ -56,7 +140,11 @@ export const formConfig: FormConfig = {
     {
       name: 'notes',
       type: FieldDataType.Text,
-      ui: { label: 'Large Team Notes', widget: WidgetType.Textarea, helpText: 'Required when the team has 8 or more members.' },
+      ui: {
+        label: 'Large Team Notes',
+        widget: WidgetType.Textarea,
+        helpText: 'Required when the team has 8 or more members.',
+      },
       validation: { required: true, minLength: 10 },
       logic: { visibleIf: { '>=': [{ var: 'team_size' }, 8] } },
     },
@@ -74,9 +162,9 @@ export const formConfig2: FormConfig = {
       ui: { label: 'Region', widget: WidgetType.Select, placeholder: 'Select a region…' },
       validation: { required: true },
       options: [
-        { value: 'europe',   label: 'Europe' },
+        { value: 'europe', label: 'Europe' },
         { value: 'americas', label: 'The Americas' },
-        { value: 'asia',     label: 'Asia Pacific' },
+        { value: 'asia', label: 'Asia Pacific' },
       ],
     },
 
@@ -88,15 +176,15 @@ export const formConfig2: FormConfig = {
       validation: { required: true },
       logic: { visibleIf: { '!!': [{ var: 'region' }] } },
       options: [
-        { value: 'fr', label: 'France',         logic: { visibleIf: { '==': [{ var: 'region' }, 'europe'] } } },
-        { value: 'de', label: 'Germany',        logic: { visibleIf: { '==': [{ var: 'region' }, 'europe'] } } },
+        { value: 'fr', label: 'France', logic: { visibleIf: { '==': [{ var: 'region' }, 'europe'] } } },
+        { value: 'de', label: 'Germany', logic: { visibleIf: { '==': [{ var: 'region' }, 'europe'] } } },
         { value: 'uk', label: 'United Kingdom', logic: { visibleIf: { '==': [{ var: 'region' }, 'europe'] } } },
-        { value: 'us', label: 'United States',  logic: { visibleIf: { '==': [{ var: 'region' }, 'americas'] } } },
-        { value: 'ca', label: 'Canada',         logic: { visibleIf: { '==': [{ var: 'region' }, 'americas'] } } },
-        { value: 'br', label: 'Brazil',         logic: { visibleIf: { '==': [{ var: 'region' }, 'americas'] } } },
-        { value: 'jp', label: 'Japan',          logic: { visibleIf: { '==': [{ var: 'region' }, 'asia'] } } },
-        { value: 'au', label: 'Australia',      logic: { visibleIf: { '==': [{ var: 'region' }, 'asia'] } } },
-        { value: 'sg', label: 'Singapore',      logic: { visibleIf: { '==': [{ var: 'region' }, 'asia'] } } },
+        { value: 'us', label: 'United States', logic: { visibleIf: { '==': [{ var: 'region' }, 'americas'] } } },
+        { value: 'ca', label: 'Canada', logic: { visibleIf: { '==': [{ var: 'region' }, 'americas'] } } },
+        { value: 'br', label: 'Brazil', logic: { visibleIf: { '==': [{ var: 'region' }, 'americas'] } } },
+        { value: 'jp', label: 'Japan', logic: { visibleIf: { '==': [{ var: 'region' }, 'asia'] } } },
+        { value: 'au', label: 'Australia', logic: { visibleIf: { '==': [{ var: 'region' }, 'asia'] } } },
+        { value: 'sg', label: 'Singapore', logic: { visibleIf: { '==': [{ var: 'region' }, 'asia'] } } },
       ],
     },
 
@@ -108,26 +196,30 @@ export const formConfig2: FormConfig = {
       validation: { required: true },
       logic: { visibleIf: { '!!': [{ var: 'country' }] } },
       options: [
-        { value: 'paris',          label: 'Paris',           logic: { visibleIf: { '==': [{ var: 'country' }, 'fr'] } } },
-        { value: 'lyon',           label: 'Lyon',            logic: { visibleIf: { '==': [{ var: 'country' }, 'fr'] } } },
-        { value: 'marseille',      label: 'Marseille',       logic: { visibleIf: { '==': [{ var: 'country' }, 'fr'] } } },
-        { value: 'berlin',         label: 'Berlin',          logic: { visibleIf: { '==': [{ var: 'country' }, 'de'] } } },
-        { value: 'munich',         label: 'Munich',          logic: { visibleIf: { '==': [{ var: 'country' }, 'de'] } } },
-        { value: 'hamburg',        label: 'Hamburg',         logic: { visibleIf: { '==': [{ var: 'country' }, 'de'] } } },
-        { value: 'london',         label: 'London',          logic: { visibleIf: { '==': [{ var: 'country' }, 'uk'] } } },
-        { value: 'manchester',     label: 'Manchester',      logic: { visibleIf: { '==': [{ var: 'country' }, 'uk'] } } },
-        { value: 'new_york',       label: 'New York',        logic: { visibleIf: { '==': [{ var: 'country' }, 'us'] } } },
-        { value: 'san_francisco',  label: 'San Francisco',   logic: { visibleIf: { '==': [{ var: 'country' }, 'us'] } } },
-        { value: 'chicago',        label: 'Chicago',         logic: { visibleIf: { '==': [{ var: 'country' }, 'us'] } } },
-        { value: 'toronto',        label: 'Toronto',         logic: { visibleIf: { '==': [{ var: 'country' }, 'ca'] } } },
-        { value: 'vancouver',      label: 'Vancouver',       logic: { visibleIf: { '==': [{ var: 'country' }, 'ca'] } } },
-        { value: 'sao_paulo',      label: 'São Paulo',       logic: { visibleIf: { '==': [{ var: 'country' }, 'br'] } } },
-        { value: 'rio',            label: 'Rio de Janeiro',  logic: { visibleIf: { '==': [{ var: 'country' }, 'br'] } } },
-        { value: 'tokyo',          label: 'Tokyo',           logic: { visibleIf: { '==': [{ var: 'country' }, 'jp'] } } },
-        { value: 'osaka',          label: 'Osaka',           logic: { visibleIf: { '==': [{ var: 'country' }, 'jp'] } } },
-        { value: 'sydney',         label: 'Sydney',          logic: { visibleIf: { '==': [{ var: 'country' }, 'au'] } } },
-        { value: 'melbourne',      label: 'Melbourne',       logic: { visibleIf: { '==': [{ var: 'country' }, 'au'] } } },
-        { value: 'singapore_city', label: 'Singapore City',  logic: { visibleIf: { '==': [{ var: 'country' }, 'sg'] } } },
+        { value: 'paris', label: 'Paris', logic: { visibleIf: { '==': [{ var: 'country' }, 'fr'] } } },
+        { value: 'lyon', label: 'Lyon', logic: { visibleIf: { '==': [{ var: 'country' }, 'fr'] } } },
+        { value: 'marseille', label: 'Marseille', logic: { visibleIf: { '==': [{ var: 'country' }, 'fr'] } } },
+        { value: 'berlin', label: 'Berlin', logic: { visibleIf: { '==': [{ var: 'country' }, 'de'] } } },
+        { value: 'munich', label: 'Munich', logic: { visibleIf: { '==': [{ var: 'country' }, 'de'] } } },
+        { value: 'hamburg', label: 'Hamburg', logic: { visibleIf: { '==': [{ var: 'country' }, 'de'] } } },
+        { value: 'london', label: 'London', logic: { visibleIf: { '==': [{ var: 'country' }, 'uk'] } } },
+        { value: 'manchester', label: 'Manchester', logic: { visibleIf: { '==': [{ var: 'country' }, 'uk'] } } },
+        { value: 'new_york', label: 'New York', logic: { visibleIf: { '==': [{ var: 'country' }, 'us'] } } },
+        { value: 'san_francisco', label: 'San Francisco', logic: { visibleIf: { '==': [{ var: 'country' }, 'us'] } } },
+        { value: 'chicago', label: 'Chicago', logic: { visibleIf: { '==': [{ var: 'country' }, 'us'] } } },
+        { value: 'toronto', label: 'Toronto', logic: { visibleIf: { '==': [{ var: 'country' }, 'ca'] } } },
+        { value: 'vancouver', label: 'Vancouver', logic: { visibleIf: { '==': [{ var: 'country' }, 'ca'] } } },
+        { value: 'sao_paulo', label: 'São Paulo', logic: { visibleIf: { '==': [{ var: 'country' }, 'br'] } } },
+        { value: 'rio', label: 'Rio de Janeiro', logic: { visibleIf: { '==': [{ var: 'country' }, 'br'] } } },
+        { value: 'tokyo', label: 'Tokyo', logic: { visibleIf: { '==': [{ var: 'country' }, 'jp'] } } },
+        { value: 'osaka', label: 'Osaka', logic: { visibleIf: { '==': [{ var: 'country' }, 'jp'] } } },
+        { value: 'sydney', label: 'Sydney', logic: { visibleIf: { '==': [{ var: 'country' }, 'au'] } } },
+        { value: 'melbourne', label: 'Melbourne', logic: { visibleIf: { '==': [{ var: 'country' }, 'au'] } } },
+        {
+          value: 'singapore_city',
+          label: 'Singapore City',
+          logic: { visibleIf: { '==': [{ var: 'country' }, 'sg'] } },
+        },
       ],
     },
 
@@ -139,8 +231,8 @@ export const formConfig2: FormConfig = {
       validation: { required: true },
       logic: { visibleIf: { '!!': [{ var: 'city' }] } },
       options: [
-        { value: 'standard',  label: 'Standard (5–7 business days)' },
-        { value: 'express',   label: 'Express (2–3 business days)' },
+        { value: 'standard', label: 'Standard (5–7 business days)' },
+        { value: 'express', label: 'Express (2–3 business days)' },
         {
           value: 'overnight',
           label: 'Overnight (next business day)',
@@ -190,7 +282,11 @@ export const formConfig3: FormConfig = {
     {
       name: 'kids_count',
       type: FieldDataType.Integer,
-      ui: { label: 'Number of Children', widget: WidgetType.Number, helpText: 'Enter how many children are travelling (max 6).' },
+      ui: {
+        label: 'Number of Children',
+        widget: WidgetType.Number,
+        helpText: 'Enter how many children are travelling (max 6).',
+      },
       validation: { required: true, min: 1, max: 6 },
       logic: { visibleIf: { '==': [{ var: 'has_kids' }, true] } },
     },
@@ -253,9 +349,9 @@ export const formConfig3: FormConfig = {
       logic: { visibleIf: { '==': [{ var: 'needs_assistance' }, true] } },
       options: [
         { value: 'wheelchair', label: 'Wheelchair / Mobility Aid' },
-        { value: 'visual',     label: 'Visual Impairment Support' },
-        { value: 'hearing',    label: 'Hearing Impairment Support' },
-        { value: 'dietary',    label: 'Medical Dietary Requirement' },
+        { value: 'visual', label: 'Visual Impairment Support' },
+        { value: 'hearing', label: 'Hearing Impairment Support' },
+        { value: 'dietary', label: 'Medical Dietary Requirement' },
         {
           value: 'infant',
           label: 'Infant / Bassinet Request',
@@ -294,11 +390,11 @@ export const formConfig3: FormConfig = {
       ui: { label: 'Meal Preference', widget: WidgetType.Select, placeholder: 'Select a meal…' },
       validation: { required: true },
       options: [
-        { value: 'standard',    label: 'Standard' },
-        { value: 'vegetarian',  label: 'Vegetarian' },
-        { value: 'vegan',       label: 'Vegan' },
-        { value: 'halal',       label: 'Halal' },
-        { value: 'kosher',      label: 'Kosher' },
+        { value: 'standard', label: 'Standard' },
+        { value: 'vegetarian', label: 'Vegetarian' },
+        { value: 'vegan', label: 'Vegan' },
+        { value: 'halal', label: 'Halal' },
+        { value: 'kosher', label: 'Kosher' },
         { value: 'gluten_free', label: 'Gluten-Free' },
       ],
     },
@@ -314,10 +410,7 @@ export const formConfig3: FormConfig = {
       validation: { required: true, minLength: 5, maxLength: 300 },
       logic: {
         visibleIf: {
-          and: [
-            { '!!': [{ var: 'meal_preference' }] },
-            { '!=': [{ var: 'meal_preference' }, 'standard'] },
-          ],
+          and: [{ '!!': [{ var: 'meal_preference' }] }, { '!=': [{ var: 'meal_preference' }, 'standard'] }],
         },
       },
     },

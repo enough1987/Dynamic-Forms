@@ -76,12 +76,7 @@ describe('syncFieldState', () => {
     }
     const h = makeHandlers()
     // region switched from 'europe' to 'americas', but country is still 'fr'
-    syncFieldState(
-      field,
-      { country: 'fr', region: 'americas' },
-      { country: '' },
-      h,
-    )
+    syncFieldState(field, { country: 'fr', region: 'americas' }, { country: '' }, h)
     expect(h.setFieldValue).toHaveBeenCalledWith('country', '')
     expect(h.setFieldTouched).toHaveBeenCalledWith('country', false, false)
   })
@@ -105,12 +100,7 @@ describe('syncFieldState', () => {
       ],
     }
     const h = makeHandlers()
-    syncFieldState(
-      field,
-      { country: 'fr', region: 'europe' },
-      { country: '' },
-      h,
-    )
+    syncFieldState(field, { country: 'fr', region: 'europe' }, { country: '' }, h)
     expect(h.setFieldValue).not.toHaveBeenCalled()
   })
 

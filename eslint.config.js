@@ -83,7 +83,13 @@ export default defineConfig([
         { selector: 'variable', types: ['boolean'], format: ['PascalCase'], prefix: ['is', 'has'] },
         { selector: 'parameter', types: ['boolean'], format: ['PascalCase'], prefix: ['is', 'has'] },
         // typeProperty booleans: is/has prefix, but allow `touched` (Formik convention)
-        { selector: 'typeProperty', types: ['boolean'], format: ['PascalCase'], prefix: ['is', 'has'], filter: { regex: '^touched$', match: false } },
+        {
+          selector: 'typeProperty',
+          types: ['boolean'],
+          format: ['PascalCase'],
+          prefix: ['is', 'has'],
+          filter: { regex: '^touched$', match: false },
+        },
       ],
 
       // Complexity

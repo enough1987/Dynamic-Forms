@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
 import { useFormik } from 'formik'
 import Box from '@mui/material/Box'
@@ -27,13 +28,9 @@ export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDy
     enableReinitialize: true,
     validate: handleValidate,
     onSubmit: (values, helpers) => {
-      const visibleFields = config.fields.filter((f) =>
-        evaluateLogic(f.logic?.visibleIf, values),
-      )
+      const visibleFields = config.fields.filter((f) => evaluateLogic(f.logic?.visibleIf, values))
       const visibleNames = new Set(visibleFields.map((f) => f.name))
-      const filtered = Object.fromEntries(
-        Object.entries(values).filter(([k]) => visibleNames.has(k)),
-      )
+      const filtered = Object.fromEntries(Object.entries(values).filter(([k]) => visibleNames.has(k)))
       try {
         onSubmit?.(filtered)
       } finally {
@@ -49,17 +46,11 @@ export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDy
       syncFieldState(field, formik.values, initialValues, handlers)
     }
   }, [formik.values])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   const fields = renderFields(config.fields, formik)
 
   return (
-    <Box
-      component="form"
-      onSubmit={formik.handleSubmit}
-      noValidate
-      autoComplete="off"
-    >
+    <Box component="form" onSubmit={formik.handleSubmit} noValidate autoComplete="off">
       <Stack spacing={3}>
         <Typography variant="h5">{config.title}</Typography>
         {fields}

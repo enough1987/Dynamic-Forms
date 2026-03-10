@@ -7,14 +7,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const FormExamples = lazy(() =>
-  import('@/pages/FormExamples').then((m) => ({ default: m.FormExamples as React.ComponentType }))
+  import('@/pages/FormExamples').then((m) => ({ default: m.FormExamples as React.ComponentType })),
 )
 
 function App(): React.JSX.Element {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack spacing={4} sx={{ mx: 'auto', mt: 6 }}>
-        <Typography variant="h4" component="h1">DynamicForm</Typography>
+        <Typography variant="h4" component="h1">
+          DynamicForm
+        </Typography>
         <Suspense fallback={<CircularProgress />}>
           <FormExamples />
         </Suspense>

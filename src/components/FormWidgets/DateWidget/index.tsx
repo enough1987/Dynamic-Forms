@@ -30,10 +30,10 @@ export const DateWidget = memo(function DateWidget({ field, formState }: DateWid
   }
 
   function handleClose(): void {
-    (document.activeElement as HTMLElement | null)?.blur()
+    ;(document.activeElement as HTMLElement | null)?.blur()
   }
 
-  if(!field) return null
+  if (!field) return null
 
   return (
     <DatePicker
@@ -47,7 +47,9 @@ export const DateWidget = memo(function DateWidget({ field, formState }: DateWid
         textField: {
           id: field.name,
           name: field.name,
-          onBlur: () => { void formState.setFieldTouched(field.name, true) },
+          onBlur: () => {
+            void formState.setFieldTouched(field.name, true)
+          },
           required: Boolean(field.validation?.required),
           error: isError,
           helperText: helperText,

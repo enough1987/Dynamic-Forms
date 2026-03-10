@@ -24,9 +24,7 @@ describe('areEqual', () => {
 
   it('should return false when field reference changes', () => {
     const formState = makeFormState()
-    expect(
-      areEqual({ formState, field: { name: 'a' } }, { formState, field: { name: 'a' } }),
-    ).toBe(false)
+    expect(areEqual({ formState, field: { name: 'a' } }, { formState, field: { name: 'a' } })).toBe(false)
   })
 
   it('should return false when value changes', () => {

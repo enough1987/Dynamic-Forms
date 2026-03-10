@@ -157,9 +157,7 @@ describe('FormDynamic', () => {
     })
     await user.click(screen.getByRole('button', { name: /submit/i }))
     await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledWith(
-        expect.not.objectContaining({ driving_license: expect.anything() }),
-      )
+      expect(onSubmit).toHaveBeenCalledWith(expect.not.objectContaining({ driving_license: expect.anything() }))
     })
   })
 })

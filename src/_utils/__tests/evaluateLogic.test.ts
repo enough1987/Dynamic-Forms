@@ -38,20 +38,14 @@ describe('evaluateLogic', () => {
 
   it('should return true for a compound AND rule', () => {
     const rule = {
-      and: [
-        { '!=': [{ var: 'lead' }, 'alice'] },
-        { '!=': [{ var: 'lead' }, 'bob'] },
-      ],
+      and: [{ '!=': [{ var: 'lead' }, 'alice'] }, { '!=': [{ var: 'lead' }, 'bob'] }],
     }
     expect(evaluateLogic(rule, { lead: 'carol' })).toBe(true)
   })
 
   it('should return false for a failing compound AND rule', () => {
     const rule = {
-      and: [
-        { '!=': [{ var: 'lead' }, 'alice'] },
-        { '!=': [{ var: 'lead' }, 'bob'] },
-      ],
+      and: [{ '!=': [{ var: 'lead' }, 'alice'] }, { '!=': [{ var: 'lead' }, 'bob'] }],
     }
     expect(evaluateLogic(rule, { lead: 'alice' })).toBe(false)
   })

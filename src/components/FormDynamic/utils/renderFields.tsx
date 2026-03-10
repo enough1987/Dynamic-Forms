@@ -1,7 +1,16 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { useFormik } from 'formik'
 import { WidgetType } from '@/contracts/enums'
-import type { CheckboxFieldConfig, DatePickerFieldConfig, FieldConfig, InputFieldConfig, NumberFieldConfig, RadioGroupFieldConfig, SelectFieldConfig, TextareaFieldConfig } from '@/contracts/field.types'
+import type {
+  CheckboxFieldConfig,
+  DatePickerFieldConfig,
+  FieldConfig,
+  InputFieldConfig,
+  NumberFieldConfig,
+  RadioGroupFieldConfig,
+  SelectFieldConfig,
+  TextareaFieldConfig,
+} from '@/contracts/field.types'
 import { InputTextWidget } from '@/components/FormWidgets/InputTextWidget'
 import { SelectWidget } from '@/components/FormWidgets/SelectWidget'
 import { DateWidget } from '@/components/FormWidgets/DateWidget'
@@ -35,9 +44,7 @@ function withFilteredOptions(
   field: SelectFieldConfig | RadioGroupFieldConfig,
   values: FormValues,
 ): SelectFieldConfig | RadioGroupFieldConfig {
-  const visibleOptions = field.options.filter((opt) =>
-    evaluateLogic(opt.logic?.visibleIf, values),
-  )
+  const visibleOptions = field.options.filter((opt) => evaluateLogic(opt.logic?.visibleIf, values))
   if (visibleOptions.length === field.options.length) return field
   return { ...field, options: visibleOptions }
 }
@@ -72,10 +79,7 @@ export function FieldRenderer({ field, formik }: FieldRendererProps): React.Reac
   }
 }
 
-export function renderFields(
-  fields: FieldConfig[],
-  formik: FormikInstance,
-): React.ReactNode[] {
+export function renderFields(fields: FieldConfig[], formik: FormikInstance): React.ReactNode[] {
   return fields
     .filter((field) => evaluateLogic(field.logic?.visibleIf, formik.values))
     .map((field) => <FieldRenderer key={field.name} field={field} formik={formik} />)

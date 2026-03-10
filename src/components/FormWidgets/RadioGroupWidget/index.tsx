@@ -18,7 +18,7 @@ export const RadioGroupWidget = memo(function RadioGroupWidget({ field, formStat
   const isError = formState.touched && Boolean(formState.error)
   const helperText = formState.touched && formState.error
 
-  if(!field) return null
+  if (!field) return null
 
   return (
     <FormControl error={isError} required={Boolean(field.validation?.required)}>
@@ -31,12 +31,7 @@ export const RadioGroupWidget = memo(function RadioGroupWidget({ field, formStat
         onBlur={formState.onBlur}
       >
         {field.options.map((opt) => (
-          <FormControlLabel
-            key={opt.value}
-            value={opt.value}
-            control={<Radio />}
-            label={opt.label}
-          />
+          <FormControlLabel key={opt.value} value={opt.value} control={<Radio />} label={opt.label} />
         ))}
       </RadioGroup>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}

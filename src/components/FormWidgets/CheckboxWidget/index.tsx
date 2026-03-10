@@ -16,7 +16,7 @@ export const CheckboxWidget = memo(function CheckboxWidget({ field, formState }:
   const isError = formState.touched && Boolean(formState.error)
   const helperText = formState.touched && formState.error
 
-  if(!field) return null
+  if (!field) return null
 
   return (
     <FormControl error={isError} required={Boolean(field.validation?.required)}>

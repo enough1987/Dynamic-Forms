@@ -37,9 +37,10 @@ async function bucketExists() {
 
 async function createBucket() {
   // us-east-1 must NOT include LocationConstraint
-  const params = region === 'us-east-1'
-    ? { Bucket: bucket }
-    : { Bucket: bucket, CreateBucketConfiguration: { LocationConstraint: region } }
+  const params =
+    region === 'us-east-1'
+      ? { Bucket: bucket }
+      : { Bucket: bucket, CreateBucketConfiguration: { LocationConstraint: region } }
 
   await s3.send(new CreateBucketCommand(params))
   console.log(`Bucket "${bucket}" created.`)

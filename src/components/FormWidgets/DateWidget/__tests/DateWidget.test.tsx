@@ -29,11 +29,7 @@ describe('DateWidget', () => {
   })
 
   it('should show formatted date value when value is provided', () => {
-    render(
-      withLocalizationProvider(
-        <DateWidget field={field} formState={makeFormState({ value: '2025-06-15' })} />,
-      ),
-    )
+    render(withLocalizationProvider(<DateWidget field={field} formState={makeFormState({ value: '2025-06-15' })} />))
     expect(screen.getByRole('spinbutton', { name: 'Month' })).toHaveAttribute('aria-valuenow', '6')
     expect(screen.getByRole('spinbutton', { name: 'Day' })).toHaveAttribute('aria-valuenow', '15')
     expect(screen.getByRole('spinbutton', { name: 'Year' })).toHaveAttribute('aria-valuenow', '2025')
@@ -55,9 +51,7 @@ describe('DateWidget', () => {
   })
 
   it('should mark the hidden input as required when validation.required is set', () => {
-    const { container } = render(
-      withLocalizationProvider(<DateWidget field={field} formState={makeFormState()} />),
-    )
+    const { container } = render(withLocalizationProvider(<DateWidget field={field} formState={makeFormState()} />))
     const hiddenInput = container.querySelector('input[name="sprint_start"]')
     expect(hiddenInput).toHaveAttribute('required')
   })
@@ -69,15 +63,10 @@ describe('DateWidget', () => {
 
   it('should call setFieldTouched when the date container loses focus', () => {
     const setFieldTouched = vi.fn().mockResolvedValue(undefined)
-    render(
-      withLocalizationProvider(
-        <DateWidget field={field} formState={makeFormState({ setFieldTouched })} />,
-      ),
-    )
+    render(withLocalizationProvider(<DateWidget field={field} formState={makeFormState({ setFieldTouched })} />))
     // React normalizes onBlur to the focusout event (which bubbles)
     const month = screen.getByRole('spinbutton', { name: 'Month' })
     fireEvent.focusOut(month)
     expect(setFieldTouched).toHaveBeenCalledWith('sprint_start', true)
   })
 })
-

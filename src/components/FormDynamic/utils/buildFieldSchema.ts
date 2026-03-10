@@ -8,9 +8,11 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
 
   if (widget === WidgetType.Checkbox) {
     const schema = z.boolean()
-    return v?.required ? schema.refine((isVal) => isVal, {
-      message: typeof v.required === 'string' ? v.required : `${field.ui.label} is required`,
-    }) : schema
+    return v?.required
+      ? schema.refine((isVal) => isVal, {
+          message: typeof v.required === 'string' ? v.required : `${field.ui.label} is required`,
+        })
+      : schema
   }
 
   if (widget === WidgetType.RadioGroup) {
@@ -21,7 +23,9 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
 
   if (widget === WidgetType.Select) {
     const validValues = (field as SelectFieldConfig).options.map((o) => String(o.value))
-    const schema = z.string().refine((val) => val === '' || validValues.includes(val), { message: 'Please select an option' })
+    const schema = z
+      .string()
+      .refine((val) => val === '' || validValues.includes(val), { message: 'Please select an option' })
     if (!v?.required) return schema.optional()
     return schema.refine((val) => val !== '', {
       message: typeof v.required === 'string' ? v.required : `${field.ui.label} is required`,
@@ -79,10 +83,7 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
   }
   if (v.email) {
     const emailMsg = typeof v.email === 'string' ? v.email : 'Invalid email'
-    schema = schema.refine(
-      (val) => !val || z.email().safeParse(val).success,
-      emailMsg
-    ) as unknown as z.ZodString
+    schema = schema.refine((val) => !val || z.email().safeParse(val).success, emailMsg) as unknown as z.ZodString
   }
   if (v.pattern !== undefined) {
     const val = typeof v.pattern === 'string' ? v.pattern : v.pattern.value

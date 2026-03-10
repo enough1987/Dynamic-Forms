@@ -18,9 +18,5 @@ export function makeFormState(overrides: Partial<FieldFormState> = {}): FieldFor
 }
 
 export function withLocalizationProvider(ui: ReactNode): JSX.Element {
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      {ui}
-    </LocalizationProvider>
-  )
+  return <LocalizationProvider dateAdapter={AdapterDayjs}>{ui}</LocalizationProvider>
 }
