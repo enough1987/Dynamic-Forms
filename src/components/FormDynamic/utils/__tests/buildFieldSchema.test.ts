@@ -42,7 +42,7 @@ describe('buildFieldSchema – Checkbox', () => {
     const result = parse(field, false)
     expect(result?.success).toBe(false)
     if (!result?.success) {
-      expect(result.error.issues[0].message).toBe('You must accept')
+      expect(result?.error.issues[0].message).toBe('You must accept')
     }
   })
 })
@@ -83,7 +83,7 @@ describe('buildFieldSchema – Select', () => {
     const result = parse(field, '')
     expect(result?.success).toBe(false)
     if (!result?.success) {
-      expect(result.error.issues[0].message).toBe('Please choose a country')
+      expect(result?.error.issues[0].message).toBe('Please choose a country')
     }
   })
 })
@@ -159,7 +159,7 @@ describe('buildFieldSchema – DatePicker', () => {
     const result = parse(field, '2024-01-01')
     expect(result?.success).toBe(false)
     if (!result?.success) {
-      expect(result.error.issues[0].message).toBe('Too early')
+      expect(result?.error.issues[0].message).toBe('Too early')
     }
   })
 })
@@ -207,7 +207,7 @@ describe('buildFieldSchema – Number', () => {
     const tooLow = parse(field, 5)
     expect(tooLow?.success).toBe(false)
     if (!tooLow?.success) {
-      expect(tooLow.error.issues[0].message).toBe('Must be at least 18')
+      expect(tooLow?.error.issues[0].message).toBe('Must be at least 18')
     }
   })
 })
@@ -235,7 +235,7 @@ describe('buildFieldSchema – Input/Text', () => {
     const result = parse(field, '')
     expect(result?.success).toBe(false)
     if (!result?.success) {
-      expect(result.error.issues[0].message).toBe('Bio is mandatory')
+      expect(result?.error.issues[0].message).toBe('Bio is mandatory')
     }
   })
 
@@ -262,7 +262,7 @@ describe('buildFieldSchema – Input/Text', () => {
     const result = parse(field, 'foo')
     expect(result?.success).toBe(false)
     if (!result?.success) {
-      expect(result.error.issues[0].message).toBe('Bad email')
+      expect(result?.error.issues[0].message).toBe('Bad email')
     }
   })
 
@@ -280,7 +280,7 @@ describe('buildFieldSchema – Input/Text', () => {
     const result = parse(field, 'abc')
     expect(result?.success).toBe(false)
     if (!result?.success) {
-      expect(result.error.issues[0].message).toBe('Digits only')
+      expect(result?.error.issues[0].message).toBe('Digits only')
     }
   })
 
