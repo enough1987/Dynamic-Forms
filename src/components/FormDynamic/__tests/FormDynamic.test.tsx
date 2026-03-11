@@ -72,7 +72,7 @@ describe('FormDynamic', () => {
   it('should render custom submit label', () => {
     render(
       <Wrapper>
-        <FormDynamic config={simpleConfig} submitLabel="Save" />
+        <FormDynamic config={simpleConfig} onSubmit={vi.fn()} submitLabel="Save" />
       </Wrapper>,
     )
     expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument()
