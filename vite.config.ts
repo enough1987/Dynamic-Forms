@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => ({
     include: [
       'react',
       'react-dom',
+      'react-router-dom',
       'formik',
       'zod',
       '@mui/material',
@@ -51,6 +52,7 @@ export default defineConfig(({ mode }) => ({
           'vendor-ui': [
             'react',
             'react-dom',
+            'react-router-dom',
             '@mui/material',
             '@mui/icons-material',
             '@mui/x-date-pickers',

@@ -1,0 +1,175 @@
+{
+  "id": "dataviz_config",
+  "title": "Data Visualisation Export Configuration",
+  "fields": [
+    {
+      "name": "chart_type",
+      "type": "text",
+      "ui": {
+        "label": "Chart Type",
+        "widget": "select",
+        "helpText": "Primary chart type to render for the output figure."
+      },
+      "options": [
+        { "value": "bar", "label": "Bar chart (default)" },
+        { "value": "line", "label": "Line chart" },
+        { "value": "scatter", "label": "Scatter plot" },
+        { "value": "heatmap", "label": "Heatmap" },
+        { "value": "boxplot", "label": "Box plot" },
+        { "value": "violin", "label": "Violin plot" }
+      ]
+    },
+    {
+      "name": "color_palette",
+      "type": "text",
+      "ui": {
+        "label": "Colour Palette",
+        "widget": "select",
+        "helpText": "Discrete or continuous colour scale applied to data series."
+      },
+      "options": [
+        { "value": "viridis", "label": "Viridis (default, perceptually uniform)" },
+        { "value": "plasma", "label": "Plasma" },
+        { "value": "tab10", "label": "Tab10 — categorical" },
+        { "value": "set2", "label": "Set2 — colorblind-friendly" },
+        { "value": "rdbu", "label": "RdBu — diverging" },
+        { "value": "grayscale", "label": "Greyscale" }
+      ]
+    },
+    {
+      "name": "figure_format",
+      "type": "text",
+      "ui": {
+        "label": "Output Format",
+        "widget": "select",
+        "helpText": "File format for saved figures."
+      },
+      "options": [
+        { "value": "png", "label": "PNG (default)" },
+        { "value": "svg", "label": "SVG — vector, editable" },
+        { "value": "pdf", "label": "PDF — publication quality" },
+        { "value": "html", "label": "HTML — interactive (Plotly)" }
+      ]
+    },
+    {
+      "name": "figure_dpi",
+      "type": "text",
+      "ui": {
+        "label": "Figure Resolution (DPI)",
+        "widget": "select",
+        "helpText": "Dots per inch for raster output (PNG). Ignored for SVG/PDF."
+      },
+      "options": [
+        { "value": "72", "label": "72 — screen" },
+        { "value": "150", "label": "150" },
+        { "value": "300", "label": "300 (default)" },
+        { "value": "600", "label": "600 — print" }
+      ]
+    },
+    {
+      "name": "figure_size",
+      "type": "text",
+      "ui": {
+        "label": "Figure Size",
+        "widget": "select",
+        "helpText": "Preset width × height in inches."
+      },
+      "options": [
+        { "value": "6x4", "label": "6 × 4 in — small" },
+        { "value": "8x6", "label": "8 × 6 in (default)" },
+        { "value": "12x8", "label": "12 × 8 in — large" },
+        { "value": "16x12", "label": "16 × 12 in — poster" }
+      ]
+    },
+    {
+      "name": "theme",
+      "type": "text",
+      "ui": {
+        "label": "Plot Theme",
+        "widget": "select",
+        "helpText": "Overall visual theme / style sheet."
+      },
+      "options": [
+        { "value": "white", "label": "White (default)" },
+        { "value": "whitegrid", "label": "White with grid" },
+        { "value": "darkgrid", "label": "Dark grid" },
+        { "value": "minimal", "label": "Minimal — no background" },
+        { "value": "classic", "label": "Classic — matplotlib default" }
+      ]
+    },
+    {
+      "name": "font_size",
+      "type": "text",
+      "ui": {
+        "label": "Base Font Size",
+        "widget": "select",
+        "helpText": "Base font size in points. Axis tick labels and legends scale relative to this."
+      },
+      "options": [
+        { "value": "8", "label": "8 pt" },
+        { "value": "10", "label": "10 pt" },
+        { "value": "12", "label": "12 pt (default)" },
+        { "value": "14", "label": "14 pt" },
+        { "value": "16", "label": "16 pt" }
+      ]
+    },
+    {
+      "name": "show_legend",
+      "type": "text",
+      "ui": {
+        "label": "Show legend",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "show_grid",
+      "type": "text",
+      "ui": {
+        "label": "Show grid lines",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "log_scale_y",
+      "type": "text",
+      "ui": {
+        "label": "Logarithmic Y-axis",
+        "widget": "checkbox",
+        "helpText": "Applies log10 scale to the Y axis."
+      }
+    },
+    {
+      "name": "show_error_bars",
+      "type": "text",
+      "ui": {
+        "label": "Show error bars (mean ± SEM)",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "add_significance_bars",
+      "type": "text",
+      "ui": {
+        "label": "Annotate significance brackets",
+        "widget": "checkbox",
+        "helpText": "Adds asterisk brackets (*, **, ***) between compared groups."
+      }
+    },
+    {
+      "name": "transparent_background",
+      "type": "text",
+      "ui": {
+        "label": "Transparent background",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "tight_layout",
+      "type": "text",
+      "ui": {
+        "label": "Apply tight layout to avoid clipping",
+        "widget": "checkbox"
+      }
+    }
+  ]
+}

@@ -84,15 +84,15 @@ export default defineConfig([
         // Allow any format for properties that require quotes (e.g. HTTP headers, data keys)
         { selector: 'property', modifiers: ['requiresQuotes'], format: null },
         // Booleans: must be prefixed with `is` or `has`
-        { selector: 'variable', types: ['boolean'], format: ['PascalCase'], prefix: ['is', 'has'] },
-        { selector: 'parameter', types: ['boolean'], format: ['PascalCase'], prefix: ['is', 'has'] },
+        { selector: 'variable', types: ['boolean'], format: ['PascalCase'], prefix: ['is', 'has'], filter: { regex: '^disabled$', match: false } },
+        { selector: 'parameter', types: ['boolean'], format: ['PascalCase'], prefix: ['is', 'has'], filter: { regex: '^disabled$', match: false } },
         // typeProperty booleans: is/has prefix, but allow `touched` (Formik convention)
         {
           selector: 'typeProperty',
           types: ['boolean'],
           format: ['PascalCase'],
-          prefix: ['is', 'has'],
-          filter: { regex: '^touched$', match: false },
+          prefix: ['is', 'has',],
+          filter: { regex: '^(touched|disabled)$', match: false },
         },
       ],
 

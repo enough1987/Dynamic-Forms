@@ -5,15 +5,19 @@ import type { DatePickerFieldConfig } from '@/contracts/field.types'
 import { DateFormat } from '@/contracts/formats'
 import type { FieldFormState } from '@/contracts/form.types'
 import { areEqual } from '@/_utils/areEqual'
+import { FormStyleType } from '@/contracts/enums'
 
 type DateWidgetProps = {
   field: DatePickerFieldConfig
   formState: FieldFormState
+  styleType?: FormStyleType
+  disabled?: boolean
 }
 
-export const DateWidget = memo(function DateWidget({ field, formState }: DateWidgetProps) {
+export const DateWidget = memo(function DateWidget({ field, formState, styleType, disabled }: DateWidgetProps) {
   const isError = formState.touched && Boolean(formState.error)
   const helperText = (formState.touched && formState.error) || field.ui.helpText || ''
+  const isOptionsStyleType = styleType === FormStyleType.Options
 
   const dayjsValue = formState.value ? dayjs(formState.value as string) : null
 
@@ -51,10 +55,18 @@ export const DateWidget = memo(function DateWidget({ field, formState }: DateWid
             void formState.setFieldTouched(field.name, true)
           },
           required: Boolean(field.validation?.required),
+          disabled,
           error: isError,
           helperText: helperText,
-          fullWidth: true,
+          fullWidth: !isOptionsStyleType,
           variant: 'outlined',
+          size: 'small',
+          sx: isOptionsStyleType
+            ? {
+                '& .MuiInputBase-input': { fontSize: '0.75rem', py: '5px' },
+                '& .MuiInputLabel-root': { fontSize: '0.75rem' },
+              }
+            : undefined,
         },
         field: { clearable: true },
       }}

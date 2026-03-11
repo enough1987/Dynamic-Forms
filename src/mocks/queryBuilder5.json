@@ -1,0 +1,179 @@
+{
+  "id": "pipeline_runtime_config",
+  "title": "Bioinformatics Pipeline Runtime Configuration",
+  "fields": [
+    {
+      "name": "executor",
+      "type": "text",
+      "ui": {
+        "label": "Executor / Scheduler",
+        "widget": "select",
+        "helpText": "Workflow execution backend. Default: local process."
+      },
+      "options": [
+        { "value": "local", "label": "Local (default)" },
+        { "value": "slurm", "label": "SLURM — HPC cluster" },
+        { "value": "sge", "label": "SGE — Sun Grid Engine" },
+        { "value": "lsf", "label": "LSF — IBM Platform" },
+        { "value": "aws", "label": "AWS Batch" },
+        { "value": "gcp", "label": "Google Cloud Life Sciences" }
+      ]
+    },
+    {
+      "name": "container_engine",
+      "type": "text",
+      "ui": {
+        "label": "Container Engine",
+        "widget": "select",
+        "helpText": "Containerization runtime for task reproducibility."
+      },
+      "options": [
+        { "value": "none", "label": "None — use system environment (default)" },
+        { "value": "docker", "label": "Docker" },
+        { "value": "singularity", "label": "Singularity / Apptainer" },
+        { "value": "podman", "label": "Podman" }
+      ]
+    },
+    {
+      "name": "cpus_per_task",
+      "type": "text",
+      "ui": {
+        "label": "CPUs per Task",
+        "widget": "select",
+        "helpText": "CPU cores allocated to each parallel task."
+      },
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "4", "label": "4 (default)" },
+        { "value": "8", "label": "8" },
+        { "value": "16", "label": "16" },
+        { "value": "32", "label": "32" }
+      ]
+    },
+    {
+      "name": "memory_per_task",
+      "type": "text",
+      "ui": {
+        "label": "Memory per Task",
+        "widget": "select",
+        "helpText": "RAM allocated to each parallel task."
+      },
+      "options": [
+        { "value": "2GB", "label": "2 GB" },
+        { "value": "4GB", "label": "4 GB" },
+        { "value": "8GB", "label": "8 GB (default)" },
+        { "value": "16GB", "label": "16 GB" },
+        { "value": "32GB", "label": "32 GB" },
+        { "value": "64GB", "label": "64 GB" }
+      ]
+    },
+    {
+      "name": "max_parallel_jobs",
+      "type": "text",
+      "ui": {
+        "label": "Max Parallel Jobs",
+        "widget": "select",
+        "helpText": "Maximum number of jobs submitted to the scheduler at once."
+      },
+      "options": [
+        { "value": "1", "label": "1 — sequential" },
+        { "value": "4", "label": "4" },
+        { "value": "8", "label": "8 (default)" },
+        { "value": "16", "label": "16" },
+        { "value": "32", "label": "32" },
+        { "value": "unlimited", "label": "Unlimited" }
+      ]
+    },
+    {
+      "name": "error_strategy",
+      "type": "text",
+      "ui": {
+        "label": "Error Handling Strategy",
+        "widget": "select",
+        "helpText": "Behaviour when a task fails."
+      },
+      "options": [
+        { "value": "terminate", "label": "Terminate — abort the pipeline (default)" },
+        { "value": "ignore", "label": "Ignore — continue with remaining tasks" },
+        { "value": "retry", "label": "Retry — re-run failed tasks (up to max retries)" },
+        { "value": "finish", "label": "Finish — complete running tasks, then stop" }
+      ]
+    },
+    {
+      "name": "max_retries",
+      "type": "text",
+      "ui": {
+        "label": "Max Retries on Failure",
+        "widget": "select",
+        "helpText": "Number of automatic retries before marking a task as failed."
+      },
+      "options": [
+        { "value": "0", "label": "0 — no retries (default)" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ]
+    },
+    {
+      "name": "resume_on_restart",
+      "type": "text",
+      "ui": {
+        "label": "Resume from last successful checkpoint",
+        "widget": "checkbox",
+        "helpText": "Skips already-completed steps when re-running an interrupted pipeline."
+      }
+    },
+    {
+      "name": "enable_tracing",
+      "type": "text",
+      "ui": {
+        "label": "Enable execution trace / timeline report",
+        "widget": "checkbox",
+        "helpText": "Generates an HTML timeline of task runtimes and resource usage."
+      }
+    },
+    {
+      "name": "publish_all_outputs",
+      "type": "text",
+      "ui": {
+        "label": "Publish all intermediate outputs",
+        "widget": "checkbox",
+        "helpText": "Copies all intermediate files to the results directory."
+      }
+    },
+    {
+      "name": "cleanup_work_dir",
+      "type": "text",
+      "ui": {
+        "label": "Clean up work directory after completion",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "notify_on_completion",
+      "type": "text",
+      "ui": {
+        "label": "Send email notification on completion",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "notify_on_error",
+      "type": "text",
+      "ui": {
+        "label": "Send email notification on error",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "dry_run",
+      "type": "text",
+      "ui": {
+        "label": "Dry run — validate config without executing",
+        "widget": "checkbox",
+        "helpText": "Checks inputs and parameters without submitting any jobs."
+      }
+    }
+  ]
+}

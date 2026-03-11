@@ -1,0 +1,170 @@
+{
+  "id": "ml_model_config",
+  "title": "Machine Learning Model Configuration",
+  "fields": [
+    {
+      "name": "algorithm",
+      "type": "text",
+      "ui": {
+        "label": "Algorithm",
+        "widget": "select",
+        "helpText": "Supervised learning algorithm to train."
+      },
+      "options": [
+        { "value": "random_forest", "label": "Random Forest (default)" },
+        { "value": "gradient_boosting", "label": "Gradient Boosting (XGBoost)" },
+        { "value": "svm", "label": "Support Vector Machine" },
+        { "value": "logistic_regression", "label": "Logistic Regression" },
+        { "value": "elastic_net", "label": "Elastic Net" }
+      ]
+    },
+    {
+      "name": "task",
+      "type": "text",
+      "ui": {
+        "label": "Task Type",
+        "widget": "select",
+        "helpText": "Whether to train a classification or regression model."
+      },
+      "options": [
+        { "value": "classification", "label": "Classification (default)" },
+        { "value": "regression", "label": "Regression" },
+        { "value": "multiclass", "label": "Multi-class classification" }
+      ]
+    },
+    {
+      "name": "cv_strategy",
+      "type": "text",
+      "ui": {
+        "label": "Cross-Validation Strategy",
+        "widget": "select",
+        "helpText": "Method for estimating out-of-sample model performance."
+      },
+      "options": [
+        { "value": "kfold", "label": "K-Fold (default)" },
+        { "value": "stratified", "label": "Stratified K-Fold" },
+        { "value": "loocv", "label": "Leave-One-Out (LOOCV)" },
+        { "value": "repeated_kfold", "label": "Repeated K-Fold" }
+      ]
+    },
+    {
+      "name": "n_folds",
+      "type": "text",
+      "ui": {
+        "label": "Number of CV Folds",
+        "widget": "select",
+        "helpText": "Number of folds for k-fold cross-validation."
+      },
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "5", "label": "5 (default)" },
+        { "value": "10", "label": "10" },
+        { "value": "20", "label": "20" }
+      ]
+    },
+    {
+      "name": "feature_selection",
+      "type": "text",
+      "ui": {
+        "label": "Feature Selection Method",
+        "widget": "select",
+        "helpText": "Strategy for reducing input feature dimensionality."
+      },
+      "options": [
+        { "value": "none", "label": "None — use all features (default)" },
+        { "value": "variance", "label": "Variance threshold" },
+        { "value": "rfe", "label": "Recursive Feature Elimination (RFE)" },
+        { "value": "lasso", "label": "LASSO regularization" },
+        { "value": "pca", "label": "PCA dimensionality reduction" }
+      ]
+    },
+    {
+      "name": "scaler",
+      "type": "text",
+      "ui": {
+        "label": "Feature Scaling",
+        "widget": "select",
+        "helpText": "Normalization applied to continuous features before training."
+      },
+      "options": [
+        { "value": "none", "label": "None (default)" },
+        { "value": "standard", "label": "StandardScaler (z-score)" },
+        { "value": "minmax", "label": "MinMaxScaler (0–1)" },
+        { "value": "robust", "label": "RobustScaler (median/IQR)" }
+      ]
+    },
+    {
+      "name": "class_weight",
+      "type": "text",
+      "ui": {
+        "label": "Class Weight Handling",
+        "widget": "select",
+        "helpText": "Adjust class weights to handle imbalanced target labels."
+      },
+      "options": [
+        { "value": "none", "label": "None (default)" },
+        { "value": "balanced", "label": "Balanced — inversely proportional to class frequency" },
+        { "value": "custom", "label": "Custom weights" }
+      ]
+    },
+    {
+      "name": "tune_hyperparams",
+      "type": "text",
+      "ui": {
+        "label": "Tune hyperparameters automatically",
+        "widget": "checkbox",
+        "helpText": "Runs grid search or Bayesian optimisation over hyperparameter space."
+      }
+    },
+    {
+      "name": "early_stopping",
+      "type": "text",
+      "ui": {
+        "label": "Enable early stopping",
+        "widget": "checkbox",
+        "helpText": "Halts training when validation metric stops improving."
+      }
+    },
+    {
+      "name": "compute_shap",
+      "type": "text",
+      "ui": {
+        "label": "Compute SHAP feature importances",
+        "widget": "checkbox",
+        "helpText": "Generates SHAP values for model explainability."
+      }
+    },
+    {
+      "name": "plot_roc",
+      "type": "text",
+      "ui": {
+        "label": "Generate ROC / PR curves",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "plot_confusion",
+      "type": "text",
+      "ui": {
+        "label": "Generate confusion matrix",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "export_model",
+      "type": "text",
+      "ui": {
+        "label": "Export trained model (pickle / joblib)",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "stratify_split",
+      "type": "text",
+      "ui": {
+        "label": "Stratify train/test split by target label",
+        "widget": "checkbox"
+      }
+    }
+  ]
+}

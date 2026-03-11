@@ -1,0 +1,175 @@
+{
+  "id": "alpha_diversity_config",
+  "title": "Alpha & Beta Diversity Analysis Configuration",
+  "fields": [
+    {
+      "name": "alpha_metric",
+      "type": "text",
+      "ui": {
+        "label": "Alpha Diversity Metric",
+        "widget": "select",
+        "helpText": "Within-sample diversity measure to compute."
+      },
+      "options": [
+        { "value": "shannon", "label": "Shannon entropy (default)" },
+        { "value": "observed", "label": "Observed features (richness)" },
+        { "value": "chao1", "label": "Chao1 richness estimator" },
+        { "value": "faith_pd", "label": "Faith's phylogenetic diversity" },
+        { "value": "simpson", "label": "Simpson index" },
+        { "value": "pielou_e", "label": "Pielou's evenness" }
+      ]
+    },
+    {
+      "name": "beta_metric",
+      "type": "text",
+      "ui": {
+        "label": "Beta Diversity Metric",
+        "widget": "select",
+        "helpText": "Between-sample dissimilarity measure used for ordination and PERMANOVA."
+      },
+      "options": [
+        { "value": "bray_curtis", "label": "Bray–Curtis dissimilarity (default)" },
+        { "value": "unweighted_unifrac", "label": "Unweighted UniFrac" },
+        { "value": "weighted_unifrac", "label": "Weighted UniFrac" },
+        { "value": "jaccard", "label": "Jaccard distance" },
+        { "value": "aitchison", "label": "Aitchison distance (CLR-based)" }
+      ]
+    },
+    {
+      "name": "rarefaction_depth",
+      "type": "text",
+      "ui": {
+        "label": "Rarefaction Depth",
+        "widget": "select",
+        "helpText": "Subsample depth for rarefaction normalization. Use 'none' to skip."
+      },
+      "options": [
+        { "value": "none", "label": "None — no rarefaction" },
+        { "value": "auto", "label": "Auto — minimum sample depth (default)" },
+        { "value": "1000", "label": "1 000 reads" },
+        { "value": "5000", "label": "5 000 reads" },
+        { "value": "10000", "label": "10 000 reads" }
+      ]
+    },
+    {
+      "name": "ordination_method",
+      "type": "text",
+      "ui": {
+        "label": "Ordination Method",
+        "widget": "select",
+        "helpText": "Dimensionality reduction for beta-diversity visualisation."
+      },
+      "options": [
+        { "value": "PCoA", "label": "PCoA — Principal Coordinates Analysis (default)" },
+        { "value": "NMDS", "label": "NMDS — Non-metric MDS" },
+        { "value": "UMAP", "label": "UMAP" },
+        { "value": "tSNE", "label": "t-SNE" }
+      ]
+    },
+    {
+      "name": "permanova_permutations",
+      "type": "text",
+      "ui": {
+        "label": "PERMANOVA Permutations",
+        "widget": "select",
+        "helpText": "Number of permutations for PERMANOVA significance testing."
+      },
+      "options": [
+        { "value": "99", "label": "99 (fast)" },
+        { "value": "499", "label": "499" },
+        { "value": "999", "label": "999 (default)" },
+        { "value": "4999", "label": "4 999 (high precision)" }
+      ]
+    },
+    {
+      "name": "taxonomic_level",
+      "type": "text",
+      "ui": {
+        "label": "Collapse Taxonomy Level",
+        "widget": "select",
+        "helpText": "Aggregate features to this taxonomic level before analysis."
+      },
+      "options": [
+        { "value": "ASV", "label": "ASV / OTU (no collapse, default)" },
+        { "value": "species", "label": "Species" },
+        { "value": "genus", "label": "Genus" },
+        { "value": "family", "label": "Family" },
+        { "value": "order", "label": "Order" }
+      ]
+    },
+    {
+      "name": "prevalence_filter",
+      "type": "text",
+      "ui": {
+        "label": "Prevalence Filter (%)",
+        "widget": "select",
+        "helpText": "Remove features present in fewer than X% of samples."
+      },
+      "options": [
+        { "value": "0", "label": "0% — keep all features (default)" },
+        { "value": "5", "label": "5%" },
+        { "value": "10", "label": "10%" },
+        { "value": "20", "label": "20%" }
+      ]
+    },
+    {
+      "name": "run_permanova",
+      "type": "text",
+      "ui": {
+        "label": "Run PERMANOVA on metadata variables",
+        "widget": "checkbox",
+        "helpText": "Tests whether group centroids differ significantly in beta-diversity space."
+      }
+    },
+    {
+      "name": "run_anosim",
+      "type": "text",
+      "ui": {
+        "label": "Run ANOSIM",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "plot_alpha_boxplot",
+      "type": "text",
+      "ui": {
+        "label": "Plot alpha diversity boxplots by group",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "plot_ordination",
+      "type": "text",
+      "ui": {
+        "label": "Plot ordination (PCoA / NMDS)",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "plot_rarefaction_curve",
+      "type": "text",
+      "ui": {
+        "label": "Generate rarefaction curves",
+        "widget": "checkbox",
+        "helpText": "Plots species accumulation curves to assess sequencing depth adequacy."
+      }
+    },
+    {
+      "name": "include_phylogenetic",
+      "type": "text",
+      "ui": {
+        "label": "Include phylogenetic tree-based metrics",
+        "widget": "checkbox",
+        "helpText": "Requires a rooted phylogenetic tree (e.g., for Faith's PD, UniFrac)."
+      }
+    },
+    {
+      "name": "export_distance_matrix",
+      "type": "text",
+      "ui": {
+        "label": "Export beta diversity distance matrix",
+        "widget": "checkbox"
+      }
+    }
+  ]
+}

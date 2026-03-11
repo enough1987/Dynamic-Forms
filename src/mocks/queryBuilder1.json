@@ -1,0 +1,177 @@
+{
+  "id": "rnaseq_deseq2_config",
+  "title": "DESeq2 Differential Expression Configuration",
+  "fields": [
+    {
+      "name": "test_type",
+      "type": "text",
+      "ui": {
+        "label": "Statistical Test",
+        "widget": "select",
+        "helpText": "Hypothesis test used for differential expression. Default: Wald."
+      },
+      "options": [
+        { "value": "Wald", "label": "Wald test (default)" },
+        { "value": "LRT", "label": "LRT — Likelihood Ratio Test" }
+      ]
+    },
+    {
+      "name": "fit_type",
+      "type": "text",
+      "ui": {
+        "label": "Dispersion Fit Type",
+        "widget": "select",
+        "helpText": "Method for fitting dispersion estimates. Default: parametric."
+      },
+      "options": [
+        { "value": "parametric", "label": "Parametric (default)" },
+        { "value": "local", "label": "Local" },
+        { "value": "mean", "label": "Mean" },
+        { "value": "glmGamPoi", "label": "glmGamPoi (fast, for large datasets)" }
+      ]
+    },
+    {
+      "name": "sfType",
+      "type": "text",
+      "ui": {
+        "label": "Size Factor Estimation",
+        "widget": "select",
+        "helpText": "Method for estimating size factors for normalization."
+      },
+      "options": [
+        { "value": "ratio", "label": "Ratio (default)" },
+        { "value": "poscounts", "label": "Positive counts (sparse data)" },
+        { "value": "iterate", "label": "Iterative" }
+      ]
+    },
+    {
+      "name": "p_adjust_method",
+      "type": "text",
+      "ui": {
+        "label": "P-value Adjustment Method",
+        "widget": "select",
+        "helpText": "Multiple testing correction applied to raw p-values."
+      },
+      "options": [
+        { "value": "BH", "label": "BH — Benjamini–Hochberg (default)" },
+        { "value": "bonferroni", "label": "Bonferroni" },
+        { "value": "holm", "label": "Holm" },
+        { "value": "fdr", "label": "FDR" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    {
+      "name": "alpha",
+      "type": "text",
+      "ui": {
+        "label": "Significance Threshold (alpha)",
+        "widget": "select",
+        "helpText": "Adjusted p-value cutoff for calling significant genes."
+      },
+      "options": [
+        { "value": "0.01", "label": "0.01 — strict" },
+        { "value": "0.05", "label": "0.05 (default)" },
+        { "value": "0.1", "label": "0.10 — lenient" }
+      ]
+    },
+    {
+      "name": "replace_outliers",
+      "type": "text",
+      "ui": {
+        "label": "Replace outlier counts before re-fitting",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "lfc_threshold",
+      "type": "text",
+      "ui": {
+        "label": "Log2 Fold-Change Threshold",
+        "widget": "select",
+        "helpText": "Minimum absolute log2 fold-change for significance testing."
+      },
+      "options": [
+        { "value": "0", "label": "0 — no threshold (default)" },
+        { "value": "0.5", "label": "0.5" },
+        { "value": "1", "label": "1 — 2-fold change" },
+        { "value": "1.5", "label": "1.5" },
+        { "value": "2", "label": "2 — 4-fold change" }
+      ]
+    },
+    {
+      "name": "min_counts",
+      "type": "text",
+      "ui": {
+        "label": "Minimum Count Filter",
+        "widget": "select",
+        "helpText": "Genes with fewer total counts across all samples are filtered out."
+      },
+      "options": [
+        { "value": "1", "label": "1 (default)" },
+        { "value": "5", "label": "5" },
+        { "value": "10", "label": "10" },
+        { "value": "20", "label": "20" }
+      ]
+    },
+    {
+      "name": "independent_filtering",
+      "type": "text",
+      "ui": {
+        "label": "Independent filtering to maximize significance",
+        "widget": "checkbox",
+        "helpText": "Automatically filters lowly expressed genes to improve power."
+      }
+    },
+    {
+      "name": "shrink_lfc",
+      "type": "text",
+      "ui": {
+        "label": "Apply LFC shrinkage (apeglm)",
+        "widget": "checkbox",
+        "helpText": "Shrinks noisy log2 fold-change estimates for low-count genes."
+      }
+    },
+    {
+      "name": "blind_vst",
+      "type": "text",
+      "ui": {
+        "label": "Blind VST / rlog transformation",
+        "widget": "checkbox",
+        "helpText": "Variance-stabilizing transform ignores experimental design (recommended for QC)."
+      }
+    },
+    {
+      "name": "cook_cutoff",
+      "type": "text",
+      "ui": {
+        "label": "Apply Cook's distance outlier detection",
+        "widget": "checkbox",
+        "helpText": "Flags genes with extreme sample-level outliers using Cook's distance."
+      }
+    },
+    {
+      "name": "plot_ma",
+      "type": "text",
+      "ui": {
+        "label": "Generate MA plot",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "plot_volcano",
+      "type": "text",
+      "ui": {
+        "label": "Generate volcano plot",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "export_normalized_counts",
+      "type": "text",
+      "ui": {
+        "label": "Export normalized count matrix",
+        "widget": "checkbox"
+      }
+    }
+  ]
+}

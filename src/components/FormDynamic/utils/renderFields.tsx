@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { useFormik } from 'formik'
-import { WidgetType } from '@/contracts/enums'
+import { WidgetType, type FormStyleType } from '@/contracts/enums'
 import type { FieldConfig, RadioGroupFieldConfig, SelectFieldConfig } from '@/contracts/field.types'
 import { InputTextWidget } from '@/components/FormWidgets/InputTextWidget'
 import { SelectWidget } from '@/components/FormWidgets/SelectWidget'
@@ -30,6 +30,8 @@ type FormikInstance = ReturnType<typeof useFormik<FormValues>>
 type FieldRendererProps = {
   field: FieldConfig
   formik: FormikInstance
+  styleType?: FormStyleType
+  disabled?: boolean
 }
 
 /** Extracts the Formik state slice relevant to a single field into a flat `FieldFormState` object. */
@@ -62,32 +64,32 @@ function withFilteredOptions<F extends SelectFieldConfig | RadioGroupFieldConfig
   return { ...field, options: visibleOptions }
 }
 
-export function FieldRenderer({ field, formik }: FieldRendererProps): React.ReactNode {
+export function FieldRenderer({ field, formik, styleType, disabled }: FieldRendererProps): React.ReactNode {
   const formState = getFieldFormState(field, formik)
   const values = formik.values
 
   if (isWidget(field, WidgetType.Select)) {
     const f = withFilteredOptions(field, values)
-    return <SelectWidget field={f} formState={formState} />
+    return <SelectWidget field={f} formState={formState} styleType={styleType} disabled={disabled} />
   }
   if (isWidget(field, WidgetType.Input)) {
-    return <InputTextWidget field={field} formState={formState} />
+    return <InputTextWidget field={field} formState={formState} styleType={styleType} disabled={disabled} />
   }
   if (isWidget(field, WidgetType.DatePicker)) {
-    return <DateWidget field={field} formState={formState} />
+    return <DateWidget field={field} formState={formState} styleType={styleType} disabled={disabled} />
   }
   if (isWidget(field, WidgetType.Checkbox)) {
-    return <CheckboxWidget field={field} formState={formState} />
+    return <CheckboxWidget field={field} formState={formState} styleType={styleType} disabled={disabled} />
   }
   if (isWidget(field, WidgetType.RadioGroup)) {
     const f = withFilteredOptions(field, values)
-    return <RadioGroupWidget field={f} formState={formState} />
+    return <RadioGroupWidget field={f} formState={formState} styleType={styleType} disabled={disabled} />
   }
   if (isWidget(field, WidgetType.Textarea)) {
-    return <TextareaWidget field={field} formState={formState} />
+    return <TextareaWidget field={field} formState={formState} styleType={styleType} disabled={disabled} />
   }
   if (isWidget(field, WidgetType.Number)) {
-    return <InputNumberWidget field={field} formState={formState} />
+    return <InputNumberWidget field={field} formState={formState} styleType={styleType} disabled={disabled} />
   }
 
   return null
@@ -98,8 +100,15 @@ export function FieldRenderer({ field, formik }: FieldRendererProps): React.Reac
  * array of rendered `FieldRenderer` elements. Hidden fields are excluded
  * entirely from the DOM (not just visually hidden).
  */
-export function renderFields(fields: FieldConfig[], formik: FormikInstance): React.ReactNode[] {
+export function renderFields(
+  fields: FieldConfig[],
+  formik: FormikInstance,
+  styleType?: FormStyleType,
+  disabled?: boolean,
+): React.ReactNode[] {
   return fields
     .filter((field) => evaluateLogic(field.logic?.visibleIf, formik.values))
-    .map((field) => <FieldRenderer key={field.name} field={field} formik={formik} />)
+    .map((field) => (
+      <FieldRenderer key={field.name} field={field} formik={formik} styleType={styleType} disabled={disabled} />
+    ))
 }

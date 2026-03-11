@@ -1,0 +1,186 @@
+{
+  "id": "maaslin_result_config",
+  "title": "Title for model configuration form",
+  "fields": [
+    {
+      "name": "normalization",
+      "type": "text",
+      "ui": {
+        "label": "Normalization",
+        "widget": "select",
+        "helpText": "Applied to features before transformation. Default: TSS."
+      },
+      "options": [
+        { "value": "TSS", "label": "TSS — Total-Sum Scaling (recommended)" },
+        { "value": "CLR", "label": "CLR — Centered Log Ratio" },
+        { "value": "NONE", "label": "NONE — No normalization" }
+      ]
+    },
+    {
+      "name": "transform",
+      "type": "text",
+      "ui": {
+        "label": "Transformation",
+        "widget": "select",
+        "helpText": "Applied after normalization. LOG (base 2) is recommended."
+      },
+      "options": [
+        { "value": "LOG", "label": "LOG — Log base 2 (recommended)" },
+        { "value": "PLOG", "label": "PLOG — Pseudo-log (for metabolomics)" },
+        { "value": "NONE", "label": "NONE — No transformation" }
+      ]
+    },
+    {
+      "name": "correction",
+      "type": "text",
+      "ui": {
+        "label": "Multiple Testing Correction",
+        "widget": "select",
+        "helpText": "FDR correction method applied to raw p-values. Default: BH."
+      },
+      "options": [
+        { "value": "BH", "label": "BH — Benjamini–Hochberg (default)" },
+        { "value": "bonferroni", "label": "Bonferroni" },
+        { "value": "holm", "label": "Holm" },
+        { "value": "hochberg", "label": "Hochberg" },
+        { "value": "BY", "label": "BY — Benjamini–Yekutieli" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    {
+      "name": "evaluate_only",
+      "type": "text",
+      "ui": {
+        "label": "Evaluate Only",
+        "widget": "select",
+        "helpText": "Fit only abundance models, only prevalence models, or both."
+      },
+      "options": [
+        { "value": "both", "label": "Both (default)" },
+        { "value": "abundance", "label": "Abundance only" },
+        { "value": "prevalence", "label": "Prevalence only" }
+      ]
+    },
+    {
+      "name": "max_significance",
+      "type": "text",
+      "ui": {
+        "label": "Maximum Significance (q-value threshold)",
+        "widget": "select",
+        "helpText": "FDR-corrected q-value threshold for significance."
+      },
+      "options": [
+        { "value": "0.01", "label": "0.01 — strict" },
+        { "value": "0.05", "label": "0.05" },
+        { "value": "0.1", "label": "0.10 (default)" },
+        { "value": "0.2", "label": "0.20 — lenient" }
+      ]
+    },
+    {
+      "name": "absolute_abundance_type",
+      "type": "text",
+      "ui": {
+        "label": "Absolute Abundance Source",
+        "widget": "select",
+        "helpText": "How absolute abundance data was obtained, if available."
+      },
+      "options": [
+        { "value": "none", "label": "None — using relative abundances" },
+        { "value": "spike_in", "label": "Spike-in normalization" },
+        { "value": "total_scaling", "label": "Total abundance scaling (qPCR / cell count)" }
+      ]
+    },
+    {
+      "name": "max_pngs",
+      "type": "text",
+      "ui": {
+        "label": "Per-Association Plots — Maximum Count",
+        "widget": "select",
+        "helpText": "Top N significant associations for which individual plots are generated."
+      },
+      "options": [
+        { "value": "10", "label": "10" },
+        { "value": "20", "label": "20" },
+        { "value": "30", "label": "30 (default)" },
+        { "value": "50", "label": "50" },
+        { "value": "100", "label": "100" }
+      ]
+    },
+    {
+      "name": "standardize",
+      "type": "text",
+      "ui": {
+        "label": "Standardize continuous metadata (z-scores)",
+        "widget": "checkbox",
+        "helpText": "Recommended — enables coefficient comparison across metadata variables."
+      }
+    },
+    {
+      "name": "median_comparison_abundance",
+      "type": "text",
+      "ui": {
+        "label": "Median comparison — abundance",
+        "widget": "checkbox",
+        "helpText": "Test abundance coefficients against the median (recommended for relative abundance data)."
+      }
+    },
+    {
+      "name": "median_comparison_prevalence",
+      "type": "text",
+      "ui": {
+        "label": "Median comparison — prevalence",
+        "widget": "checkbox",
+        "helpText": "Test prevalence coefficients against the median."
+      }
+    },
+    {
+      "name": "augment",
+      "type": "text",
+      "ui": {
+        "label": "Augment data to avoid linear separability",
+        "widget": "checkbox",
+        "helpText": "Adds small synthetic observations to prevent linear separability in logistic regression."
+      }
+    },
+    {
+      "name": "small_random_effects",
+      "type": "text",
+      "ui": {
+        "label": "Replace small random effects with fixed effects automatically",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "plot_summary_plot",
+      "type": "text",
+      "ui": {
+        "label": "Generate summary plot of significant associations",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "plot_associations",
+      "type": "text",
+      "ui": {
+        "label": "Generate per-association scatter plots",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "save_models",
+      "type": "text",
+      "ui": {
+        "label": "Save fitted models to RData file",
+        "widget": "checkbox"
+      }
+    },
+    {
+      "name": "save_plots_rds",
+      "type": "text",
+      "ui": {
+        "label": "Save plots as RDS files",
+        "widget": "checkbox"
+      }
+    }
+  ]
+}

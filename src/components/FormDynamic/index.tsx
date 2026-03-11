@@ -10,14 +10,25 @@ import { validate } from '@/components/FormDynamic/utils/validate'
 import { renderFields } from '@/components/FormDynamic/utils/renderFields'
 import { syncFieldState } from '@/components/FormDynamic/utils/syncFieldState'
 import { evaluateLogic } from '@/_utils/evaluateLogic'
+import { FormStyleType } from '@/contracts/enums'
 
 type FormDynamicProps = {
   config: FormConfig
   onSubmit?: (values: FormValues) => void
+  onChange?: (values: FormValues) => void
   submitLabel?: string
+  styleType?: FormStyleType
+  disabled?: boolean
 }
 
-export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDynamicProps): React.JSX.Element {
+export function FormDynamic({
+  config,
+  onSubmit,
+  onChange,
+  submitLabel = 'Submit',
+  styleType,
+  disabled,
+}: FormDynamicProps): React.JSX.Element {
   // Derive initial values from the field config so the form always starts in a known state.
   // useMemo keeps the reference stable so it can safely be listed in the useEffect dep array below.
   const initialValues = useMemo(() => buildInitialValues(config.fields), [config.fields])
@@ -43,6 +54,10 @@ export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDy
     },
   })
 
+  useEffect(() => {
+    onChange?.(formik.values)
+  }, [onChange, formik.values])
+
   // Reset hidden fields, and reset select/radio fields whose current value is no longer in visible options
   useEffect(() => {
     const handlers = { setFieldValue: formik.setFieldValue, setFieldTouched: formik.setFieldTouched }
@@ -51,21 +66,33 @@ export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDy
     }
   }, [config.fields, formik.setFieldTouched, formik.setFieldValue, formik.values, initialValues])
 
-  const fields = renderFields(config.fields, formik)
+  const fields = renderFields(config.fields, formik, styleType, disabled)
+  const isOptionsStyleType = styleType === FormStyleType.Options
 
   return (
     <Box component="form" onSubmit={formik.handleSubmit} noValidate autoComplete="off">
-      <Stack spacing={3}>
-        <Typography variant="h5">{config.title}</Typography>
-        {fields}
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          disabled={formik.isSubmitting || !formik.isValid || !formik.dirty}
-        >
-          {submitLabel}
-        </Button>
+      <Stack spacing={isOptionsStyleType ? 0 : 3}>
+        {!isOptionsStyleType && <Typography variant="h5">{config.title}</Typography>}
+        {isOptionsStyleType ? (
+          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 240px)', gap: 1, alignItems: 'start' }}>
+            {fields}
+          </Box>
+        ) : (
+          fields
+        )}
+        {onSubmit && (
+          <Button
+            type="submit"
+            variant={isOptionsStyleType ? 'outlined' : 'contained'}
+            size="small"
+            disabled={formik.isSubmitting || !formik.isValid || !formik.dirty || disabled}
+            sx={
+              isOptionsStyleType ? { width: 120, mt: 1, bgcolor: 'background.paper', fontSize: '0.75rem' } : undefined
+            }
+          >
+            {submitLabel}
+          </Button>
+        )}
       </Stack>
     </Box>
   )

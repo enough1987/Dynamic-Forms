@@ -4,6 +4,11 @@ export enum FieldDataType {
   Integer = 'integer',
 }
 
+export enum FormStyleType {
+  Table = 'table',
+  Options = 'options',
+}
+
 export enum WidgetType {
   Input = 'input',
   Select = 'select',

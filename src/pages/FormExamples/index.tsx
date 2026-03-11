@@ -71,9 +71,6 @@ export function FormExamples(): React.JSX.Element {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <Box sx={{ flexShrink: 0, px: 2, pt: 4, pb: 2, bgcolor: 'background.default', zIndex: 10 }}>
-        <Typography variant="h4" component="h1" sx={{ mb: 3 }}>
-          DynamicForm
-        </Typography>
         <FormControl>
           <FormLabel>Form Config</FormLabel>
           <RadioGroup
