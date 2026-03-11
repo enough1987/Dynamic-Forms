@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import reactCompiler from 'eslint-plugin-react-compiler'
 import tseslint from 'typescript-eslint'
 import react from 'eslint-plugin-react'
 import { defineConfig, globalIgnores } from 'eslint/config'
@@ -31,6 +32,9 @@ export default defineConfig([
       react: {
         version: 'detect',
       },
+    },
+    plugins: {
+      'react-compiler': reactCompiler,
     },
     rules: {
       // Possible problems
@@ -103,6 +107,9 @@ export default defineConfig([
       'react/jsx-no-useless-fragment': 'error',
       'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
       'react-hooks/exhaustive-deps': 'error',
+
+      // React Compiler — enforces Rules of React required for automatic memoisation
+      'react-compiler/react-compiler': 'error',
     },
   },
 ])

@@ -47,7 +47,7 @@ export function FormExamples(): React.JSX.Element {
     const file = e.target.files?.[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = (ev) => {
+    reader.onload = (ev): void => {
       const text = ev.target?.result as string
       setCustomText(text)
       setCustomError(null)
@@ -76,7 +76,13 @@ export function FormExamples(): React.JSX.Element {
         </Typography>
         <FormControl>
           <FormLabel>Form Config</FormLabel>
-          <RadioGroup row value={selected} onChange={(e) => { handleSelect(e.target.value as Selected); }}>
+          <RadioGroup
+            row
+            value={selected}
+            onChange={(e) => {
+              handleSelect(e.target.value as Selected)
+            }}
+          >
             <FormControlLabel value="1" control={<Radio />} label="Config 1 — Sprint Team Assignment" />
             <FormControlLabel value="2" control={<Radio />} label="Config 2 — Shipping Location" />
             <FormControlLabel value="3" control={<Radio />} label="Config 3 — Passenger Details" />

@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFormik } from 'formik'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
@@ -19,15 +18,20 @@ type FormDynamicProps = {
 }
 
 export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDynamicProps): React.JSX.Element {
-  const initialValues = buildInitialValues(config.fields)
+  // Derive initial values from the field config so the form always starts in a known state.
+  // useMemo keeps the reference stable so it can safely be listed in the useEffect dep array below.
+  const initialValues = useMemo(() => buildInitialValues(config.fields), [config.fields])
 
   const handleValidate = (values: FormValues): Record<string, string> => validate(config.fields, values)
 
   const formik = useFormik<FormValues>({
     initialValues,
+    // Re-initialise the form when `config` changes (e.g. user loads a different form)
     enableReinitialize: true,
     validate: handleValidate,
     onSubmit: (values, helpers) => {
+      // Strip hidden fields from the submission — they may hold stale values
+      // that should not be sent to the caller
       const visibleFields = config.fields.filter((f) => evaluateLogic(f.logic?.visibleIf, values))
       const visibleNames = new Set(visibleFields.map((f) => f.name))
       const filtered = Object.fromEntries(Object.entries(values).filter(([k]) => visibleNames.has(k)))
@@ -45,7 +49,7 @@ export function FormDynamic({ config, onSubmit, submitLabel = 'Submit' }: FormDy
     for (const field of config.fields) {
       syncFieldState(field, formik.values, initialValues, handlers)
     }
-  }, [formik.values])
+  }, [config.fields, formik.setFieldTouched, formik.setFieldValue, formik.values, initialValues])
 
   const fields = renderFields(config.fields, formik)
 

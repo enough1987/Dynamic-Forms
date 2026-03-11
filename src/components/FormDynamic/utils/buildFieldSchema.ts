@@ -2,10 +2,16 @@ import { z } from 'zod'
 import { WidgetType } from '@/contracts/enums'
 import type { FieldConfig, RadioGroupFieldConfig, SelectFieldConfig } from '@/contracts/field.types'
 
+/**
+ * Builds a Zod validation schema for a single field based on its widget type
+ * and its `validation` config. Returns `null` when no validation is needed
+ * (e.g. a plain optional text field with no rules), so callers can skip it.
+ */
 export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
   const v = field.validation
   const widget = field.ui.widget
 
+  // Checkbox — boolean; only rule possible is "must be checked" (required)
   if (widget === WidgetType.Checkbox) {
     const schema = z.boolean()
     return v?.required
@@ -15,12 +21,20 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
       : schema
   }
 
+  // RadioGroup — string value that must be one of the defined option values.
+  // Allow '' for optional (not-yet-selected) state; second refine blocks '' when required.
   if (widget === WidgetType.RadioGroup) {
     const validValues = (field as RadioGroupFieldConfig).options.map((o) => String(o.value))
-    const schema = z.string().refine((val) => validValues.includes(val), { message: 'Please select an option' })
-    return v?.required ? schema : schema.optional()
+    const schema = z
+      .string()
+      .refine((val) => val === '' || validValues.includes(val), { message: 'Please select an option' })
+    if (!v?.required) return schema.optional()
+    return schema.refine((val) => val !== '', {
+      message: typeof v.required === 'string' ? v.required : `${field.ui.label} is required`,
+    })
   }
 
+  // Select — same pattern as RadioGroup
   if (widget === WidgetType.Select) {
     const validValues = (field as SelectFieldConfig).options.map((o) => String(o.value))
     const schema = z
@@ -32,8 +46,10 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
     })
   }
 
+  // Remaining widgets require a validation config to produce a schema
   if (!v) return null
 
+  // DatePicker — ISO date string with optional min/max date bounds
   if (widget === WidgetType.DatePicker) {
     let schema: z.ZodType<string> = z.iso.date()
 
@@ -51,6 +67,7 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
     return v.required ? schema : schema.optional()
   }
 
+  // Number — coerces the string input to a number, then applies min/max bounds
   if (widget === WidgetType.Number) {
     let schema = z.coerce.number()
 
@@ -68,7 +85,7 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
     return v.required ? schema : schema.optional()
   }
 
-  // Input, Textarea — string-based
+  // Input / Textarea — string-based with optional length, email, pattern, and required rules
   let schema = z.string()
 
   if (v.minLength !== undefined) {
@@ -82,6 +99,7 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
     schema = schema.max(val, msg)
   }
   if (v.email) {
+    // Allow empty value to pass (required rule below will catch that separately)
     const emailMsg = typeof v.email === 'string' ? v.email : 'Invalid email'
     schema = schema.refine((val) => !val || z.email().safeParse(val).success, emailMsg) as unknown as z.ZodString
   }
@@ -91,6 +109,7 @@ export function buildFieldSchema(field: FieldConfig): z.ZodType | null {
     schema = schema.regex(new RegExp(val), msg)
   }
   if (v.required) {
+    // min(1) rejects empty string, acting as the required check
     const msg = typeof v.required === 'string' ? v.required : `${field.ui.label} is required`
     schema = schema.min(1, msg)
   } else {
