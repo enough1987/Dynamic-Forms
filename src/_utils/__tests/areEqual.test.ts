@@ -59,4 +59,28 @@ describe('areEqual', () => {
     const formState = makeFormState({ value: true })
     expect(areEqual({ formState, field }, { formState, field })).toBe(true)
   })
+
+  it('should return true when disabled is the same', () => {
+    const field = { name: 'foo' }
+    const formState = makeFormState()
+    expect(areEqual({ formState, field, disabled: true }, { formState, field, disabled: true })).toBe(true)
+  })
+
+  it('should return false when disabled changes from false to true', () => {
+    const field = { name: 'foo' }
+    const formState = makeFormState()
+    expect(areEqual({ formState, field, disabled: false }, { formState, field, disabled: true })).toBe(false)
+  })
+
+  it('should return false when disabled changes from true to false', () => {
+    const field = { name: 'foo' }
+    const formState = makeFormState()
+    expect(areEqual({ formState, field, disabled: true }, { formState, field, disabled: false })).toBe(false)
+  })
+
+  it('should return true when disabled is undefined on both sides', () => {
+    const field = { name: 'foo' }
+    const formState = makeFormState()
+    expect(areEqual({ formState, field }, { formState, field })).toBe(true)
+  })
 })

@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton'
 import InputBase from '@mui/material/InputBase'
 import Divider from '@mui/material/Divider'
 import SendIcon from '@mui/icons-material/Send'
+import { generateId } from '@/_utils/generateId'
 import queryBuilderConfig from '@/mocks/queryBuilder.json'
 import queryBuilderConfig1 from '@/mocks/queryBuilder1.json'
 import queryBuilderConfig2 from '@/mocks/queryBuilder2.json'
@@ -46,11 +47,11 @@ export function QueryBuilderExample(): React.JSX.Element {
     setItems((prev) => {
       const tableCount = prev.filter((i) => i.type === 'table').length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
-      const tableId = crypto.randomUUID()
+      const tableId = generateId()
       setActiveTableId(tableId)
       return [
         { id: tableId, type: 'table', data: config },
-        { id: crypto.randomUUID(), type: 'message', data: { text, timestamp: new Date() } },
+        { id: generateId(), type: 'message', data: { text, timestamp: new Date() } },
         ...prev,
       ]
     })
@@ -61,7 +62,7 @@ export function QueryBuilderExample(): React.JSX.Element {
     setItems((prev) => {
       const tableCount = prev.filter((i) => i.type === 'table').length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
-      const tableId = crypto.randomUUID()
+      const tableId = generateId()
       setActiveTableId(tableId)
       return [{ id: tableId, type: 'table', data: config }, ...prev]
     })
