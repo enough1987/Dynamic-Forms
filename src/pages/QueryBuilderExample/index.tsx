@@ -34,6 +34,7 @@ export function QueryBuilderExample(): React.JSX.Element {
   const [items, setItems] = useState<QueryItem[]>([])
   const [input, setInput] = useState('')
   const [selectedValues, setSelectedValues] = useState<Record<string, string>>({})
+  const [activeTableId, setActiveTableId] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const topRef = useRef<HTMLDivElement>(null)
@@ -45,9 +46,10 @@ export function QueryBuilderExample(): React.JSX.Element {
     setItems((prev) => {
       const tableCount = prev.filter((i) => i.type === 'table').length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
-
+      const tableId = crypto.randomUUID()
+      setActiveTableId(tableId)
       return [
-        { id: crypto.randomUUID(), type: 'table', data: config },
+        { id: tableId, type: 'table', data: config },
         { id: crypto.randomUUID(), type: 'message', data: { text, timestamp: new Date() } },
         ...prev,
       ]
@@ -59,8 +61,9 @@ export function QueryBuilderExample(): React.JSX.Element {
     setItems((prev) => {
       const tableCount = prev.filter((i) => i.type === 'table').length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
-
-      return [{ id: crypto.randomUUID(), type: 'table', data: config }, ...prev]
+      const tableId = crypto.randomUUID()
+      setActiveTableId(tableId)
+      return [{ id: tableId, type: 'table', data: config }, ...prev]
     })
   }
 
@@ -115,7 +118,9 @@ export function QueryBuilderExample(): React.JSX.Element {
             placeholder="Type a message… (Enter to send)"
             value={input}
             inputRef={inputRef}
-            onChange={(e) => { setInput(e.target.value); }}
+            onChange={(e) => {
+              setInput(e.target.value)
+            }}
             onKeyDown={handleKeyDown}
             sx={{ fontSize: 14 }}
           />
@@ -137,7 +142,7 @@ export function QueryBuilderExample(): React.JSX.Element {
           }}
         >
           <div ref={topRef} />
-          {items.map((item, index) => {
+          {items.map((item) => {
             if (item.type === 'message') {
               return <MessageArea key={item.id} message={item.data} />
             } else if (item.type === 'table') {
@@ -145,10 +150,10 @@ export function QueryBuilderExample(): React.JSX.Element {
                 <Box key={item.id} sx={{ px: 2, py: 1 }}>
                   <FormDynamic
                     config={item.data}
-                    onSubmit={!index ? handleSubmit : undefined}
+                    onSubmit={item.id === activeTableId ? handleSubmit : undefined}
                     onChange={handleFormValues}
                     styleType={FormStyleType.Options}
-                    disabled={!!index}
+                    disabled={item.id !== activeTableId}
                   />
                 </Box>
               )

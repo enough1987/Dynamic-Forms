@@ -84,7 +84,7 @@ export function FormDynamic({
           <Button
             type="submit"
             variant={isOptionsStyleType ? 'outlined' : 'contained'}
-            size="small"
+            size={isOptionsStyleType ? 'small' : 'medium'}
             disabled={formik.isSubmitting || !formik.isValid || !formik.dirty || disabled}
             sx={
               isOptionsStyleType ? { width: 120, mt: 1, bgcolor: 'background.paper', fontSize: '0.75rem' } : undefined
