@@ -6,33 +6,19 @@ import InputBase from '@mui/material/InputBase'
 import Divider from '@mui/material/Divider'
 import SendIcon from '@mui/icons-material/Send'
 import { generateId } from '@/_utils/generateId'
-import queryBuilderConfig from '@/mocks/queryBuilder.json'
-import queryBuilderConfig1 from '@/mocks/queryBuilder1.json'
-import queryBuilderConfig2 from '@/mocks/queryBuilder2.json'
-import queryBuilderConfig3 from '@/mocks/queryBuilder3.json'
-import queryBuilderConfig4 from '@/mocks/queryBuilder4.json'
-import queryBuilderConfig5 from '@/mocks/queryBuilder5.json'
+import { queryBuilderConfigs } from '@/mocks/QueryBuilderExample.mock'
 import type { FormValues } from '@/components/FormDynamic/utils/buildInitialValues'
 import type { FormConfig } from '@/contracts/field.types'
 import { MessageArea } from './components/MessageArea'
-import type { QueryItem } from '@/contracts/queryBuilder.types'
+import { QueueItemType, type QueueItem } from '@/contracts/queryBuilder.types'
 import { FormDynamic } from '@/components/FormDynamic'
 import { FormStyleType } from '@/contracts/enums'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 
-const queryBuilderConfigs = [
-  queryBuilderConfig,
-  queryBuilderConfig1,
-  queryBuilderConfig2,
-  queryBuilderConfig3,
-  queryBuilderConfig4,
-  queryBuilderConfig5,
-]
-
 export function QueryBuilderExample(): React.JSX.Element {
-  const [items, setItems] = useState<QueryItem[]>([])
+  const [queue, setQueue] = useState<QueueItem[]>([])
   const [input, setInput] = useState('')
   const [selectedValues, setSelectedValues] = useState<Record<string, string>>({})
   const [activeTableId, setActiveTableId] = useState<string | null>(null)
@@ -47,13 +33,13 @@ export function QueryBuilderExample(): React.JSX.Element {
     const tableId = generateId()
     setActiveTableId(tableId)
 
-    setItems((prev) => {
-      const tableCount = prev.filter((i) => i.type === 'table').length
+    setQueue((prev) => {
+      const tableCount = prev.filter((i) => i.type === QueueItemType.Table).length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
 
       return [
-        { id: tableId, type: 'table', data: config },
-        { id: generateId(), type: 'message', data: { text, timestamp: new Date() } },
+        { id: tableId, type: QueueItemType.Table, data: config },
+        { id: generateId(), type: QueueItemType.Message, data: { text, timestamp: new Date() } },
         ...prev,
       ]
     })
@@ -64,17 +50,17 @@ export function QueryBuilderExample(): React.JSX.Element {
     const tableId = generateId()
     setActiveTableId(tableId)
 
-    setItems((prev) => {
-      const tableCount = prev.filter((i) => i.type === 'table').length
+    setQueue((prev) => {
+      const tableCount = prev.filter((i) => i.type === QueueItemType.Table).length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
 
-      return [{ id: tableId, type: 'table', data: config }, ...prev]
+      return [{ id: tableId, type: QueueItemType.Table, data: config }, ...prev]
     })
   }
 
   useLayoutEffect(() => {
     topRef.current?.scrollIntoView()
-  }, [items])
+  }, [queue])
 
   const handleKeyDown = (e: React.KeyboardEvent): void => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -131,7 +117,7 @@ export function QueryBuilderExample(): React.JSX.Element {
             fullWidth
             multiline
             maxRows={4}
-            placeholder="Type a message… (Enter to send)"
+            placeholder={input}
             value={input}
             inputRef={inputRef}
             onChange={(e) => {
@@ -158,10 +144,10 @@ export function QueryBuilderExample(): React.JSX.Element {
           }}
         >
           <div ref={topRef} />
-          {items.map((item) => {
-            if (item.type === 'message') {
+          {queue.map((item) => {
+            if (item.type === QueueItemType.Message) {
               return <MessageArea key={item.id} message={item.data} />
-            } else if (item.type === 'table') {
+            } else if (item.type === QueueItemType.Table) {
               return (
                 <Box key={item.id} sx={{ px: 2, py: 1 }}>
                   <FormDynamic

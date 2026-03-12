@@ -5,4 +5,13 @@ export interface Message {
   timestamp: Date
 }
 
-export type QueryItem = { id: string; type: 'message'; data: Message } | { id: string; type: 'table'; data: FormConfig }
+export enum QueueItemType {
+  Message = 'message',
+  Table = 'table',
+  Suggestion = 'suggestion',
+}
+
+export type QueueItem =
+  | { id: string; type: QueueItemType.Message; data: Message }
+  | { id: string; type: QueueItemType.Table; data: FormConfig }
+  | { id: string; type: QueueItemType.Suggestion; data: string[] }
