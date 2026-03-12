@@ -44,11 +44,13 @@ export function QueryBuilderExample(): React.JSX.Element {
     const text = input.trim()
     if (!text) return
 
+    const tableId = generateId()
+    setActiveTableId(tableId)
+
     setItems((prev) => {
       const tableCount = prev.filter((i) => i.type === 'table').length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
-      const tableId = generateId()
-      setActiveTableId(tableId)
+
       return [
         { id: tableId, type: 'table', data: config },
         { id: generateId(), type: 'message', data: { text, timestamp: new Date() } },
@@ -59,11 +61,13 @@ export function QueryBuilderExample(): React.JSX.Element {
   }, [input])
 
   const handleSubmit = (): void => {
+    const tableId = generateId()
+    setActiveTableId(tableId)
+
     setItems((prev) => {
       const tableCount = prev.filter((i) => i.type === 'table').length
       const config = queryBuilderConfigs[tableCount % queryBuilderConfigs.length] as FormConfig
-      const tableId = generateId()
-      setActiveTableId(tableId)
+
       return [{ id: tableId, type: 'table', data: config }, ...prev]
     })
   }
@@ -80,12 +84,23 @@ export function QueryBuilderExample(): React.JSX.Element {
   }
 
   const handleFormValues = useCallback((values: FormValues): void => {
-    const incoming = Object.fromEntries(
-      Object.entries(values)
-        .filter(([, v]) => v !== '' && v !== false && v !== null)
-        .map(([k, v]) => [k, String(v)]),
-    )
-    setSelectedValues((prev) => ({ ...prev, ...incoming }))
+    setSelectedValues((prev) => {
+      const withUpdates = {
+        ...prev,
+        ...Object.fromEntries(
+          Object.entries(values)
+            .filter(([, v]) => v !== '' && v !== false && v !== null && v !== undefined)
+            .map(([k, v]) => [k, String(v)]),
+        ),
+      }
+
+      return Object.fromEntries(
+        Object.entries(withUpdates).filter(([k]) => {
+          const v = values[k]
+          return v === undefined || (v !== '' && v !== false && v !== null)
+        }),
+      )
+    })
   }, [])
 
   return (
